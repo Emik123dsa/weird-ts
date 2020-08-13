@@ -67,9 +67,16 @@ module.exports = (options) => ({
             },
           },
           {
+            loader: "resolve-url-loader",
+          },
+          {
             loader: "postcss-loader",
             options: {
-              plugins: [autoprefixer],
+              plugins: loader => [
+                require('postcss-import')({ root: loader.resourcePath }),
+                require('precss')(),
+                require('autoprefixer')(),
+              ],
               sourceMap: true,
             },
           },

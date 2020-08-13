@@ -28,7 +28,6 @@ module.exports = require("./webpack.config.js")({
   mode: "development",
   entry: {
     polyfills: ["./src/polyfills.ts"],
-    css: [".src/assets/styles/_fonts.scss"],
     bootstrap: ["./src/bootstrap.ts", "webpack-hot-middleware/client"],
   },
   output: {
