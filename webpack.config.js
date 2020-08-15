@@ -1,5 +1,6 @@
 require("@babel/polyfill");
 require("@babel/plugin-syntax-class-properties");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const webpack = require("webpack");
 const path = require("path");
@@ -57,7 +58,43 @@ module.exports = (options) => ({
         ],
       },
       {
-        test: /\.(sa|sc|c)ss$/,
+        test: /\.sass$/,
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              hmr: process.env.NODE_ENV === 'development',
+              reloadAll: true,
+            },
+          },
+          {
+            loader: "css-loader",
+            options: {
+              importLoaders: 1,
+            },
+          },
+          {
+            loader: "resolve-url-loader",
+          },
+          {
+            loader: "postcss-loader",
+            options: {
+              plugins: loader => [
+                require('postcss-import')({ root: loader.resourcePath }),
+                require('precss')(),
+                require('autoprefixer')(),
+              ],
+              sourceMap: true,
+            },
+          },
+          {
+            loader: "sass-loader",
+            options: { sourceMap: true },
+          },
+        ]
+      },
+      {
+        test: /\.(sc|c)ss$/,
         use: [
           "to-string-loader",
           {
@@ -117,4 +154,5 @@ module.exports = (options) => ({
   devtool: options.devtool,
   target: options.target,
   performance: options.performance || {},
+  optimization: options.optimization || {},
 });

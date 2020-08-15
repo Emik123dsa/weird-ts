@@ -1,6 +1,7 @@
 const path = require("path");
 const webpack = require("webpack");
-
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CircularDependencyPlugin = require("circular-dependency-plugin");
@@ -22,12 +23,17 @@ const plugins = [
     exclude: /node_modules/,
     failOnError: false,
   }),
+  new MiniCssExtractPlugin({
+    filename: '[name].css',
+    chunkFilename: '[id].css',
+  }),
 ];
 
 module.exports = require("./webpack.config.js")({
   mode: "development",
   entry: {
     polyfills: ["./src/polyfills.ts"],
+    "vendor.style": ["./src/assets/styles/main.sass"],
     bootstrap: ["./src/bootstrap.ts", "webpack-hot-middleware/client"],
   },
   output: {
@@ -39,5 +45,10 @@ module.exports = require("./webpack.config.js")({
   devtool: "eval-source-map",
   perfomance: {
     hints: false,
+  },
+  optimization: {
+    minimizer: [
+      new OptimizeCSSAssetsPlugin({})
+    ]
   },
 });
