@@ -1,0 +1,15 @@
+<form [formGroup]="departmentGroup">
+    <div>
+        <label id="title" for="">Title</label>
+        <input type="text" id="title" formControlName="title">
+    </div>
+    <div>
+        <label id="context" for="">Title</label>
+        <input type="text" id="title" formControlName="sub_title">
+    </div>
+    <div>
+        <label id="context" for="">Title</label>
+        <input type="text" id="title" formControlName="context">
+    </div>
+    <button type="submit" (click)="submitForm($event)"></button>
+</form>

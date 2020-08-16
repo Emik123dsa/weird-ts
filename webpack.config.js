@@ -1,6 +1,6 @@
 require("@babel/polyfill");
 require("@babel/plugin-syntax-class-properties");
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const webpack = require("webpack");
 const path = require("path");
@@ -55,7 +55,7 @@ module.exports = (options) => ({
             },
           },
           "angular2-template-loader",
-        ],
+        ].concat(isHMR ? "@angularclass/hmr-loader" : []),
       },
       {
         test: /\.sass$/,
@@ -63,7 +63,7 @@ module.exports = (options) => ({
           {
             loader: MiniCssExtractPlugin.loader,
             options: {
-              hmr: process.env.NODE_ENV === 'development',
+              hmr: process.env.NODE_ENV === "development",
               reloadAll: true,
             },
           },
@@ -79,10 +79,10 @@ module.exports = (options) => ({
           {
             loader: "postcss-loader",
             options: {
-              plugins: loader => [
-                require('postcss-import')({ root: loader.resourcePath }),
-                require('precss')(),
-                require('autoprefixer')(),
+              plugins: (loader) => [
+                require("postcss-import")({ root: loader.resourcePath }),
+                require("precss")(),
+                require("autoprefixer")(),
               ],
               sourceMap: true,
             },
@@ -91,7 +91,7 @@ module.exports = (options) => ({
             loader: "sass-loader",
             options: { sourceMap: true },
           },
-        ]
+        ],
       },
       {
         test: /\.(sc|c)ss$/,
@@ -109,10 +109,10 @@ module.exports = (options) => ({
           {
             loader: "postcss-loader",
             options: {
-              plugins: loader => [
-                require('postcss-import')({ root: loader.resourcePath }),
-                require('precss')(),
-                require('autoprefixer')(),
+              plugins: (loader) => [
+                require("postcss-import")({ root: loader.resourcePath }),
+                require("precss")(),
+                require("autoprefixer")(),
               ],
               sourceMap: true,
             },

@@ -41,7 +41,7 @@ export class BootstrapServer {
         console.log(`Server is listening : ${PORT}`);
       });
     }).catch(error => {
-      console.log("SCHEMA | ERROR");
+      console.log(error);
     });
 
   }

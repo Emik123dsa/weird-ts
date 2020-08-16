@@ -15,6 +15,7 @@ import { HTTP_INTERCEPTORS } from "@angular/common/http";
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpTokenInterceptor,
+      multi: true
     },
     ApiService,
     JwtService,
@@ -25,4 +26,4 @@ import { HTTP_INTERCEPTORS } from "@angular/common/http";
   imports: [CommonModule],
   declarations: [],
 })
-export class CoreModule {}
+export class CoreModule { }
