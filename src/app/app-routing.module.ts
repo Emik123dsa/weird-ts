@@ -8,10 +8,10 @@ import { NgModule } from "@angular/core";
 const routes: Routes = [
   {
     path: "",
-    loadChildren: () => import("./views/index/index.module").then(m => m.IndexModule),
+    loadChildren: () => import("./index/index.module").then(m => m.IndexModule),
   }, {
     path: "departments", 
-    loadChildren: () => import("./views/department/department.module").then(m => m.DepartmentModule),
+    loadChildren: () => import("./department/department.module").then(m => m.DepartmentModule),
   }
 ];
 

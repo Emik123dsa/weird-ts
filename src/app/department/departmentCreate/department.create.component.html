@@ -1,0 +1,27 @@
+<section class="department__vendor">
+    <div class="container">
+        <div class="department__vendor-wrapper">
+            <form [formGroup]="departmentForm" (submit)="createForm($event)">
+                <div class="department__vendor-create__info">
+                    <div class="department__vendor-create__header">
+                        <h3 class="department__vendot-create__info-title">Department info</h3>
+                    </div>
+                    <div class="department__vendor-create__body">
+                        <div class="department__vendor-create__items">
+                            <department-form-inp formControlName="name" text="name" [c]="departmentForm.controls.name"
+                                [optional]="true" idd="name" pH="Type Title to search">
+                            </department-form-inp>
+                        </div>
+                    </div>
+                    <div class="department__vendor-create__footer">
+
+                    </div>
+                </div>
+
+                <div class="department__vendor-create__contact_persons">
+
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

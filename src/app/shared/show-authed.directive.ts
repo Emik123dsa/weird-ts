@@ -1,6 +1,6 @@
 import { ViewContainerRef, Directive, OnInit, TemplateRef, Input } from "@angular/core";
 import { UserService } from "../core/services";
-@Directive({ selector: "[appShowAuthed]" })
+@Directive({ selector: "[isAuth]" })
 export class ShowAuthedDirective implements OnInit {
   public constructor(
     private templateRef: TemplateRef<any>,
@@ -10,7 +10,7 @@ export class ShowAuthedDirective implements OnInit {
 
   protected condition: boolean;
 
-  ngOnInit() {
+  public ngOnInit() {
     this.userService.isAuthenicated.subscribe(
       isAuth => {
         if (isAuth && this.condition || !isAuth && !this.condition) {
@@ -22,7 +22,7 @@ export class ShowAuthedDirective implements OnInit {
     )
   }
 
-  @Input() set appShowAuthed(condition: boolean) {
+  @Input() set isAuth(condition: boolean) {
     this.condition = condition;
   }
 }

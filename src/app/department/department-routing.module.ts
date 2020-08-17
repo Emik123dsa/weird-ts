@@ -1,18 +1,19 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { DepartmentCreate } from "../../components/departmentCreate";
-import { DepartmentList } from "../../components/departmentList";
-import { DepartmentEdit } from "../../components/departmentEdit";
+
+import { DepartmentCreate } from "./departmentCreate";
+import { DepartmentList } from "./departmentList";
+import { DepartmentEdit } from "./departmentEdit";
 
 const routes: Routes = [
   {
-    path: "departments/create",
+    path: "create",
     component: DepartmentCreate,
   }, {
-    path: "departments/edit/:currentId",
+    path: "edit/:currentId",
     component: DepartmentEdit
   }, {
-    path: "departments",
+    path: "",
     component: DepartmentList
   }
 ]

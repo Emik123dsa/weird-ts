@@ -14,7 +14,6 @@ export class IndexComponent implements OnInit {
     private departmentGroup: FormGroup;
 
     public constructor(
-        private apiService: ApiService,
         private router: ActivatedRoute,
         private route: Router,
         private fb: FormBuilder
@@ -27,18 +26,11 @@ export class IndexComponent implements OnInit {
     }
 
     public ngOnInit() { }
+
     public submitForm(e: MouseEvent) {
 
         e.preventDefault();
         e.stopImmediatePropagation();
       
-        const params: { [key: string]: number | string | boolean } = {
-            "register_new": 1,
-            "domain": "omnomnom.ru",
-            "json": true
-
-        }
-        console.log(this.route.getCurrentNavigation())
-        this.apiService.get("https://vsem-edu-oblako.ru/singlemerchant/api?register_new=1&domain=omnomnom.ru&json=1");
     }
 }

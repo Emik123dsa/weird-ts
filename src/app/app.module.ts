@@ -3,12 +3,15 @@ import { BrowserModule } from "@angular/platform-browser";
 import { FormsModule } from "@angular/forms";
 import { AppComponent } from "./app.component";
 import { CoreModule } from "./core";
-import { FooterComponent } from "./components/footer";
-import { HeaderComponent } from "./components/header";
+import { FooterComponent } from "./shared/layouts/footer";
+import { HeaderComponent } from "./shared/layouts/header";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { APP_BASE_HREF } from '@angular/common';
-import { IndexModule } from "./views/index/index.module";
+import { IndexModule } from "./index/index.module";
+import { DepartmentModule } from "./department/department.module";
+
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   imports: [
@@ -16,7 +19,9 @@ import { IndexModule } from "./views/index/index.module";
     FormsModule,
     CoreModule,
     IndexModule,
+    DepartmentModule,
     AppRoutingModule,
+    HttpClientModule
   ],
   declarations: [AppComponent, FooterComponent, HeaderComponent],
   bootstrap: [AppComponent],

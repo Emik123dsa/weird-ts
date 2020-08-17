@@ -1,0 +1,9 @@
+<div class="department__vendor-create__item">
+    <label [attr.for]="idd">
+        <input #input id="{{idd}}" placeholder="{{pH}}" type="{{type}}" (blur)="onChange($event, input.value)" />
+        <div class="label-control"></div>
+    </label>
+    <div class="error-control">
+        <span *ngFor="let error of errors">{{error}}</span>
+    </div>
+</div>

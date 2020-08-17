@@ -11,6 +11,7 @@ import { HttpTokenInterceptor } from "./interceptor";
 import { HTTP_INTERCEPTORS } from "@angular/common/http";
 
 @NgModule({
+  imports: [CommonModule],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
@@ -23,7 +24,6 @@ import { HTTP_INTERCEPTORS } from "@angular/common/http";
     AuthGuard,
     UserService,
   ],
-  imports: [CommonModule],
   declarations: [],
 })
 export class CoreModule { }
