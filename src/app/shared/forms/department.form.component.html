@@ -1,9 +1,10 @@
-<div class="department__vendor-create__item">
-    <label [attr.for]="idd">
-        <input #input id="{{idd}}" placeholder="{{pH}}" type="{{type}}" (blur)="onChange($event, input.value)" />
-        <div class="label-control"></div>
+<div class="row justify-content-center no-gutters">
+    <label class="col-xl-6 col-sm-8 col-xs-12" [attr.for]="idd">
+        <input class="department__vendor-input" #input id="{{idd}}" type="{{type}}"
+            (keyup)="onChange($event, input.value)" />
+        <div #label class="label-control">{{pH}}</div>
+        <div class="error-control">
+            <span *ngFor="let error of errors">{{error}}</span>
+        </div>
     </label>
-    <div class="error-control">
-        <span *ngFor="let error of errors">{{error}}</span>
-    </div>
 </div>

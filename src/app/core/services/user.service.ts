@@ -8,9 +8,7 @@ import { map, distinctUntilChanged } from "rxjs/operators";
 
 import { User } from "../models";
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class UserService {
   private currentUserSubject = new BehaviorSubject<User>({} as User);
 
@@ -28,7 +26,7 @@ export class UserService {
 
   public populate(): void {
     if (this.jwtService.getToken("jwtToken")) {
-      this.apiService.get("/vova")
+      this.apiService.get("/auth")
         .subscribe(data => {
           this.setAuth(data)
         }, err => {

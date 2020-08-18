@@ -1,13 +1,13 @@
 import { HttpEvent, HttpHandler, HttpEventType, HttpHeaders, HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, BehaviorSubject, throwError } from "rxjs";
-
+import { JwtService } from "./jwt.service";
 import { catchError } from "rxjs/operators";
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class ApiService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+    private jwtService: JwtService
+  ) { }
   protected formatErrors<T>(error: T): Observable<any> {
     return throwError(error);
   }

@@ -1,13 +1,13 @@
 import { Component, OnInit } from "@angular/core";
 
 import { DepartmentService } from "../../core/services";
-import { DepartmentAccurate } from "../../core";
+import { DepartmentAccurate } from "../../core/models";
 
 import { ActivatedRoute } from '@angular/router';
 
 import { Router } from '@angular/router';
 
-import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: "<department-create-vendor>",
@@ -56,14 +56,15 @@ export class DepartmentCreate implements OnInit {
 
   public createForm(e: MouseEvent): void {
 
-    e.preventDefault();
     e.stopImmediatePropagation();
-    this.departmentService.save(this.departmentForm.value).subscribe(data => {
-      console.log(data)
-    }, err => { 
-        console.log(err)
-    }) 
 
-    //console.log(this.departmentForm.value)
+    console.log(this.departmentForm.value)
+
+    // this.departmentService.save(this.departmentForm.value).subscribe(data => {
+    //   console.log(data)
+    // }, err => { 
+    //     console.log(err)
+    // }) 
+
   }
 }

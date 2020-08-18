@@ -10,13 +10,14 @@ export class HttpTokenInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     let configHeaders = {
       "Content-Type": "application/json",
-      "Accept": "application/json"
+      "Accept": "application/json",
     }
 
     const token = this.jwtService.getToken("jwtToken");
-    token && Object.assign({
+
+    token && Object.assign(configHeaders, {
       "Bearer": token
-    }, configHeaders);
+    })
 
     const request = req.clone({ setHeaders: configHeaders });
 

@@ -7,23 +7,53 @@ import {
 } from "../models";
 import { map } from "rxjs/operators";
 import { Observable } from "rxjs";
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class DepartmentService {
   constructor(
-    private readonly apiService: ApiService,
-    private readonly jwtService: JwtService,
-    private readonly httpParams: HttpParams = new HttpParams()
+    private apiService: ApiService,
   ) { }
 
-  public query(config: Department) { }
+  protected propertiesObject(query: Object | Array<Object>): Object | Array<Object> {
+
+    if (Array.isArray(query)) return query[Symbol.iterator]();
+
+    let index = 0;
+
+    let propKeys = Reflect.ownKeys(query);
+
+    return {
+      [Symbol.iterator](): Object | Array<Object> {
+        return this
+      },
+      next(): Object | Array<Object> {
+        if (index < propKeys.length) {
+          let key = propKeys[index];
+          index++;
+          return { value: [key, query[key]] };
+        } else {
+          return { done: true };
+        }
+      }
+    }
+  }
+
+  public query(config: Department) {
+
+    let params: { [key: number]: string } = {};
+
+    Object.keys(config)
+      .map((key, value) => {
+        params[key] = value;
+      })
+
+    return this.apiService.get("/searchDepartment", new HttpParams({ fromObject: params }))
+  }
 
   public getAll(): Observable<Department[]> {
     return this.apiService.get("/departments").pipe(map((data) => data));
   }
 
-  public get<T>(credentials: T): Observable<Department> {
+  public get<T>(credentials?: T): Observable<Department> {
     return this.apiService
       .get(`/currentDepartment/${credentials}`)
       .pipe(map((data) => data));

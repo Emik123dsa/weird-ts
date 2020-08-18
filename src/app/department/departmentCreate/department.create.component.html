@@ -1,27 +1,53 @@
 <section class="department__vendor">
     <div class="container">
-        <div class="department__vendor-wrapper">
-            <form [formGroup]="departmentForm" (submit)="createForm($event)">
-                <div class="department__vendor-create__info">
-                    <div class="department__vendor-create__header">
-                        <h3 class="department__vendot-create__info-title">Department info</h3>
+        <div class="row justify-content-center no-gutters align-items-center">
+            <form [formGroup]="departmentForm" (submit)="createForm($event)"
+                class="col-xl-8 col-sm-10 col-md-12 col-xs-12">
+                <div class="department__vendor-create__info row justify-content-center align-items-center pb-4">
+                    <div class="department__vendor-create__header col-xl-12 col-sm-12 col-xs-12 mb-3">
+                        <h3 class="department__vendor-create__info-title">Department info</h3>
                     </div>
-                    <div class="department__vendor-create__body">
+                    <div class="department__vendor-create__body col-12 col-xs-12 col-sm-12">
                         <div class="department__vendor-create__items">
                             <department-form-inp formControlName="name" text="name" [c]="departmentForm.controls.name"
-                                [optional]="true" idd="name" pH="Type Title to search">
+                                [optional]="true" pH="Name" idd="name">
+                            </department-form-inp>
+                            <department-form-inp formControlName="API_SCHEMA_KEY" text="API_SCHEMA_KEY"
+                                [c]="departmentForm.controls.API_SCHEMA_KEY" [optional]="true" idd="API_SCHEMA_KEY"
+                                pH="API Key">
                             </department-form-inp>
                         </div>
                     </div>
-                    <div class="department__vendor-create__footer">
+                    <div class="department__vendor-create__footer col-12 col-xs-12 col-sm-12">
 
                     </div>
                 </div>
+                <div
+                    class="department__vendor-create__contact_persons row justify-content-center align-items-center mt-4">
+                    <div class="department__vendor-create__header col-xl-12 col-sm-12 col-xs-12 mb-3">
+                        <h3 class="department__vendor-create__info-title">Department Contact Person</h3>
+                    </div>
+                    <div class="department__vendor-create__body col-12 col-xs-12 col-sm-12">
+                        <div class="department__vendor-create__items">
+                            <department-form-inp formControlName="owner" text="owner"
+                                [c]="departmentForm.controls.owner" [optional]="true" idd="owner" pH="Name">
+                            </department-form-inp>
+                            <department-form-inp formControlName="email" text="email"
+                                [c]="departmentForm.controls.email" [optional]="true" idd="email" pH="E-mail">
+                            </department-form-inp>
+                            <department-form-inp formControlName="telephone" text="telephone"
+                                [c]="departmentForm.controls.telephone" [optional]="true" idd="telephone"
+                                pH="Telephone">
+                            </department-form-inp>
+                        </div>
+                    </div>
+                    <div class="department__vendor-create__footer col-12 col-xs-12 col-sm-12">
 
-                <div class="department__vendor-create__contact_persons">
-
+                    </div>
                 </div>
+                <button> Send</button>
             </form>
         </div>
     </div>
+
 </section>

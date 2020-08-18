@@ -1,0 +1,22 @@
+.department {
+  &__vendor {
+    margin-top: 35px;
+    &-create {
+      transform: translate(15px);
+      &__contact {
+        &_persons {
+        //   margin-top: 35px;
+        }
+      }
+      &__info {
+        border-left: 1px solid #eee;
+        border-bottom: 1px solid #eee;
+        border-right: 1px solid #eee;
+        &-title {
+          font-weight: 400;
+          font-size: 16px;
+        }
+      }
+    }
+  }
+}
