@@ -1,10 +1,16 @@
 import * as express from "express";
 
+import { Request, Response } from "express";
+
+import * as axios from "axios";
+
 import * as bodyParser from "body-parser";
 
 import * as path from "path";
 
 import * as webpack from "webpack";
+
+const staticHost = `http://localhost:3000/build/index.html` as string;
 
 const webpackConfig = require("../webpack.dev.config.babel");
 
@@ -36,10 +42,20 @@ export class BootstrapServer {
    * @memberof BootstrapServer
    */
   public constructor(private readonly PORT: string, private readonly hmr?: boolean) {
-    this.init().then(res => {
-      this.app.listen(PORT, () => {
-        console.log(`Server is listening : ${PORT}`);
-      });
+    this.init().then(ans => {
+      const fileToSync = this.fetchIndexFromHost(staticHost).then(
+        file => {
+
+          this.app.get("*", (req: Request, res: Response): void => {
+            res.status(200).end(file);
+          });
+
+          this.app.listen(PORT, () => {
+            console.log(`Server is listening : ${PORT}`);
+          });
+
+        }
+      )
     }).catch(error => {
       console.log(error);
     });
@@ -113,5 +129,13 @@ export class BootstrapServer {
    */
   private staticInit<T>(pathTo?: string): void {
     this.app.use("/", express.static(path.resolve(pathTo)));
+  }
+
+
+  private async fetchIndexFromHost(staticUrL: string): Promise<string> {
+    const res = await axios.default.get(staticUrL);
+
+    return res.data;
+    
   }
 }

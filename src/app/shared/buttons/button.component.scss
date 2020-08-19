@@ -1,0 +1,15 @@
+.department {
+  &__vendor-button {
+    text-decoration: none !important;
+    color: #0c0c0c;
+    width: 100%;
+    display: block;
+    position: relative;
+    border: none;
+    background: transparent;
+    &:hover {
+      text-decoration: none !important;
+      color: #0c0c0c;
+    }
+  }
+}

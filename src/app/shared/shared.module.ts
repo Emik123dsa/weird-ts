@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
 import { ShowAuthedDirective } from "./show-authed.directive";
 import { DepartmentFormComponent } from "./forms";
+import { ButtonComponent } from "./buttons";
 
 @NgModule({
   imports: [
@@ -17,7 +18,8 @@ import { DepartmentFormComponent } from "./forms";
   ],
   declarations: [
     ShowAuthedDirective,
-    DepartmentFormComponent
+    DepartmentFormComponent,
+    ButtonComponent
   ],
   exports: [CommonModule,
     FormsModule,
@@ -25,6 +27,7 @@ import { DepartmentFormComponent } from "./forms";
     ReactiveFormsModule,
     RouterModule,
     ShowAuthedDirective,
+    ButtonComponent,
     DepartmentFormComponent,
     HttpClientXsrfModule
   ]

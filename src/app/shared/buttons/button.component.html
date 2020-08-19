@@ -1,0 +1,15 @@
+<div [ngSwitch]="condition" #button class="department__button-wrapper">
+
+    <ng-template [ngSwitchCase]="false">
+        <button #button [class.department__btn-green]="color === 'green'"
+            [class.department__btn-gray]="color === 'gray'" [class.department__btn-red]="color ==='red'"
+            class="department__vendor-button" disabled="{{disabled}}">{{text}}</button>
+    </ng-template>
+
+    <ng-template [ngSwitchCase]="true">
+        <a [class.department__btn-green]="color === 'green'" [class.department__btn-gray]="color === 'gray'"
+            [class.department__btn-red]="color ==='red'" class="department__vendor-button">
+            {{text}}</a>
+    </ng-template>
+
+</div>

@@ -3,10 +3,13 @@
         <div class="row justify-content-center no-gutters align-items-center">
             <form [formGroup]="departmentForm" (submit)="createForm($event)"
                 class="col-xl-8 col-sm-10 col-md-12 col-xs-12">
+
                 <div class="department__vendor-create__info row justify-content-center align-items-center pb-4">
+
                     <div class="department__vendor-create__header col-xl-12 col-sm-12 col-xs-12 mb-3">
                         <h3 class="department__vendor-create__info-title">Department info</h3>
                     </div>
+
                     <div class="department__vendor-create__body col-12 col-xs-12 col-sm-12">
                         <div class="department__vendor-create__items">
                             <department-form-inp formControlName="name" text="name" [c]="departmentForm.controls.name"
@@ -16,12 +19,16 @@
                                 [c]="departmentForm.controls.API_SCHEMA_KEY" [optional]="true" idd="API_SCHEMA_KEY"
                                 pH="API Key">
                             </department-form-inp>
+                            <div class="row no-gutters mt-2">
+                                <department-button class="col-xl-9 col-sm-10 col-md-10 text-right" text="Add new field"
+                                    color="green" link></department-button>
+                            </div>
+
                         </div>
                     </div>
-                    <div class="department__vendor-create__footer col-12 col-xs-12 col-sm-12">
 
-                    </div>
                 </div>
+
                 <div
                     class="department__vendor-create__contact_persons row justify-content-center align-items-center mt-4">
                     <div class="department__vendor-create__header col-xl-12 col-sm-12 col-xs-12 mb-3">
@@ -39,13 +46,25 @@
                                 [c]="departmentForm.controls.telephone" [optional]="true" idd="telephone"
                                 pH="Telephone">
                             </department-form-inp>
+                            <div class="row no-gutters mt-2">
+                                <div class="col-xl-9 col-sm-10 col-md-10 text-right">
+                                    <department-button type="submit" text="Add new field" color="green" link>
+                                    </department-button>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
-                    <div class="department__vendor-create__footer col-12 col-xs-12 col-sm-12">
 
+                </div>
+                <div class="department__vendor-form__footer row justify-content-center align-items-center mt-4">
+                    <div class="col-4 col-xs-12 col-md-4 col-sm-6">
+                        <department-button type="submit" text="Cancel" color="green"></department-button>
+                    </div>
+                    <div class="col-8 col-xs-12 col-md-8 col-sm-6">
+                        <department-button type="submit" text="Send" color="green"></department-button>
                     </div>
                 </div>
-                <button> Send</button>
             </form>
         </div>
     </div>
