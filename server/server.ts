@@ -41,25 +41,31 @@ export class BootstrapServer {
    * @param {boolean} [hmr]
    * @memberof BootstrapServer
    */
-  public constructor(private readonly PORT: string, private readonly hmr?: boolean) {
-    this.init().then(ans => {
-      const fileToSync = this.fetchIndexFromHost(staticHost).then(
-        file => {
+  public constructor(
+    private readonly PORT: string,
+    private readonly hmr?: boolean
+  ) {
+    this.init()
+      .then((ans) => {
+        // const fileToSync = this.fetchIndexFromHost(staticHost).then(
+        //   file => {
 
-          this.app.get("*", (req: Request, res: Response): void => {
-            res.status(200).end(file);
-          });
+        // this.app.get("*", (req: Request, res: Response): void => {
+        //   res.status(200).end(file);
+        // });
 
-          this.app.listen(PORT, () => {
+        this.app.listen(
+          PORT,
+          () => {
             console.log(`Server is listening : ${PORT}`);
-          });
-
-        }
-      )
-    }).catch(error => {
-      console.log(error);
-    });
-
+            //   });
+          }
+          // }
+        );
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
   /**
    * Init function is allowing us to return Promise <resolved>,
@@ -131,11 +137,9 @@ export class BootstrapServer {
     this.app.use("/", express.static(path.resolve(pathTo)));
   }
 
-
   private async fetchIndexFromHost(staticUrL: string): Promise<string> {
     const res = await axios.default.get(staticUrL);
 
     return res.data;
-    
   }
 }

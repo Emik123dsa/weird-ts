@@ -1,15 +1,29 @@
 .department {
+  &__btn {
+    &-green {
+      background: #2ecc71 !important;
+    }
+    &-gray {
+      width: 100% !important;
+      background: #7f8c8d !important;
+      color: #0c0c0c !important;
+    }
+  }
   &__vendor-button {
+    color: #fff;
+    border-radius: 6px;
+    outline: none !important;
     text-decoration: none !important;
-    color: #0c0c0c;
     width: 100%;
+    padding: 3px 15px;
     display: block;
     position: relative;
     border: none;
     background: transparent;
     &:hover {
       text-decoration: none !important;
-      color: #0c0c0c;
+      color: #fff;
+      opacity: 0.6;
     }
   }
 }
