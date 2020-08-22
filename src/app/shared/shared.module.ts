@@ -4,6 +4,7 @@ import { HttpClientModule, HttpClientXsrfModule } from "@angular/common/http";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { RouterModule } from "@angular/router";
 import { ShowAuthedDirective } from "./show-authed.directive";
+import { ClickOutsideDirective } from "./clickOutside";
 import { DepartmentFormComponent } from "./forms";
 import { ButtonComponent } from "./buttons";
 
@@ -19,6 +20,7 @@ import { ButtonComponent } from "./buttons";
   declarations: [
     ShowAuthedDirective,
     DepartmentFormComponent,
+    ClickOutsideDirective,
     ButtonComponent
   ],
   exports: [CommonModule,
@@ -29,6 +31,7 @@ import { ButtonComponent } from "./buttons";
     ShowAuthedDirective,
     ButtonComponent,
     DepartmentFormComponent,
+    ClickOutsideDirective,
     HttpClientXsrfModule
   ]
 })

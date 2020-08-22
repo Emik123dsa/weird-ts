@@ -1,9 +1,38 @@
 body {
-    font-family: $regular-font !important;
+  font-family: $regular-font !important;
 }
 
-h1, h2, h3, h4, h5, h6 {
-    margin: 0 !important;
-    padding: 0 !important;
-    font-family: $regular-font !important;
-} 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0 !important;
+  padding: 0 !important;
+  font-family: $regular-font !important;
+}
+
+.item-lift {
+  transition: 0.3s ease !important;
+  animation: none !important;
+  &:hover {
+    transform: translateY(-8px) !important;
+  }
+}
+
+.department__animation-item {
+  animation: card 0.5s both;
+}
+
+@keyframes card {
+  from {
+    transform: translate3d(0, -50px, 0);
+    opacity: 0;
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}

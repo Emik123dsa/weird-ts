@@ -1,0 +1,21 @@
+<div class="department__vendor-item department__animation-item item-lift mb-3">
+    <div *ngIf="context.value.activated" class="department__vendor-item__wrapper">
+        <div class="department__vendor-header">
+            <span class="department__vendor-header__title">
+                {{context.value.department_name}}
+            </span>
+        </div>
+        <div class="department__vendor-body">
+            <div class="department__vendor-photo__wrapper">
+                <img class="department__item-img" src="/img/department.default.jpg" [alt]="context.id" />
+            </div>
+        </div>
+
+        <div class="department__vendor-footer">
+            <department-button (outsideClick)="assimilateDropdownState(false, context.key)"
+                (onPushBtn)="activateDropdownState(true, context.key)" class="department__btn-full-width" type="submit"
+                text="Open" color="green" arrow="true" link>
+            </department-button>
+        </div>
+    </div>
+</div>

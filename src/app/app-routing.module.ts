@@ -5,6 +5,8 @@ import {
 } from "@angular/router";
 import { NgModule } from "@angular/core";
 
+// import { McBreadcrumbsModule } from 'ngx-breadcrumbs';
+
 const routes: Routes = [
   {
     path: "",
@@ -20,6 +22,7 @@ const routes: Routes = [
     RouterModule.forRoot(routes, {
       preloadingStrategy: PreloadAllModules,
     }),
+    // McBreadcrumbsModule.forRoot()
   ],
   exports: [RouterModule],
 })

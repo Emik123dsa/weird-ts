@@ -4,6 +4,7 @@ import { HttpParams } from "@angular/common/http";
 import {
   Department,
   DepartmentAccurate,
+  DepartmentQueryModel
 } from "../models";
 import { map } from "rxjs/operators";
 import { Observable } from "rxjs";
@@ -37,29 +38,21 @@ export class DepartmentService {
     }
   }
 
-  public query(config: Department) {
-
-    let params: { [key: number]: string } = {};
-
-    Object.keys(config)
-      .map((key, value) => {
-        params[key] = value;
-      })
-
-    return this.apiService.get("/searchDepartment", new HttpParams({ fromObject: params }))
+  public query(config: Readonly<DepartmentQueryModel>): Observable<any> {
+    return this.apiService.get("/searchDepartment", new HttpParams({ fromObject: config as { [param: string]: string | readonly string[] } }));
   }
 
-  public getAll(): Observable<Department[]> {
+  public getAll(): Observable<Department<DepartmentAccurate>[]> {
     return this.apiService.get("/departments").pipe(map((data) => data));
   }
 
-  public get<T>(credentials?: T): Observable<Department> {
+  public get<T>(credentials?: Readonly<T>): Observable<Department<DepartmentAccurate>> {
     return this.apiService
       .get(`/currentDepartment/${credentials}`)
       .pipe(map((data) => data));
   }
 
-  public save(credentials: Department): Observable<DepartmentAccurate> {
+  public save(credentials: Readonly<Department<DepartmentAccurate>>): Observable<DepartmentAccurate> {
     return this.apiService
       .post(`/createDepartment/`, { department: credentials })
       .pipe(map((data) => data));
@@ -67,14 +60,14 @@ export class DepartmentService {
 
   public update(
     currentId: number,
-    credentials: Department
+    credentials: Department<DepartmentAccurate>
   ): Observable<DepartmentAccurate> {
     return this.apiService
       .post(`/updateDepartment/${currentId}`, { department: credentials })
       .pipe(map((data) => data));
   }
 
-  public delete(currentId: number): Observable<DepartmentAccurate> {
+  public delete(currentId: Readonly<number>): Observable<DepartmentAccurate> {
     return this.apiService.delete(`/deleteDepartment/${currentId}`);
   }
 }

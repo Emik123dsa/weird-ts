@@ -1,6 +1,6 @@
 <section class="department__vendor">
     <div class="container">
-        <div class="row justify-content-center no-gutters align-items-center">
+        <div class="row justify-content-center no-gutters align-items-center mx-3 mb-4">
             <form [formGroup]="departmentForm" (submit)="createForm($event)"
                 class="col-xl-8 col-sm-10 col-md-12 col-xs-12">
                 <div class="department__vendor-create__info row justify-content-center align-items-center pb-4 mb-4">
@@ -51,11 +51,11 @@
                     </div>
                 </div>
                 <div class="department__vendor-form__footer row justify-content-center align-items-center mt-4">
-                    <div class="col-4 col-xs-12 col-md-4 col-sm-6">
+                    <div class="col-xl-4 col-xs-12 col-md-4 col-sm-6 pb-2">
                         <department-button class="department__full-width" type="submit" text="Cancel" color="gray">
                         </department-button>
                     </div>
-                    <div class="col-8 col-xs-12 col-md-8 col-sm-6">
+                    <div class="col-xl-8 col-xs-12 col-md-8 col-sm-6 pb-2">
                         <department-button class="department__full-width" type="submit" text="Send" color="green">
                         </department-button>
                     </div>

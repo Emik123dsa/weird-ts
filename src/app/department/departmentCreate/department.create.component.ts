@@ -20,7 +20,7 @@ export class DepartmentCreate implements OnInit {
 
   private department: DepartmentAccurate = {} as DepartmentAccurate;
 
-  items: string[] = ['vova', 'hello'];
+  private items = [] as string[];
 
   private departmentForm: FormGroup;
 
@@ -38,13 +38,13 @@ export class DepartmentCreate implements OnInit {
   ) {
 
     this.departmentForm = this.fB.group({
-      id: "",
-      name: "",
-      API_SCHEMA_KEY: "",
-      email: "",
-      telephone: "",
-      owner: "",
-    });
+      id: "" as string,
+      name: "" as string,
+      API_SCHEMA_KEY: "" as string,
+      email: "" as string,
+      telephone: "" as string,
+      owner: "" as string,
+    } as DepartmentAccurate);
 
     this.department.additional_fields = {};
 

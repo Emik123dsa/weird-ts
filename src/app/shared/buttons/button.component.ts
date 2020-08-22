@@ -19,8 +19,11 @@ export class ButtonComponent implements OnInit {
 
   private condition: boolean = false;
 
-  public constructor(@Attribute('link') private readonly link: string | boolean) {
+  public constructor(@Attribute('link') private readonly link: string | boolean,
+    @Attribute('arrow') private readonly arrow: string | boolean
+  ) {
     this.condition = this.link !== null ? true : false;
+    this.arrow = this.arrow !== null ? true : false;
   }
 
   public ngOnInit() {
@@ -70,6 +73,10 @@ export class ButtonComponent implements OnInit {
    *
    * @memberof ButtonComponent
    */
-  @Output() onPushBtn = new EventEmitter<MouseEvent>();
+  @Output() onPushBtn: EventEmitter<any> = new EventEmitter<MouseEvent>();
 
+  public openDropdown(e: MouseEvent) {
+    this.onPushBtn.emit('hello');
+  }
+  
 }

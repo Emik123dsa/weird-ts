@@ -1,6 +1,7 @@
-import { Component, Input, forwardRef, AfterViewInit, TemplateRef, Output, HostListener, OnChanges, ViewEncapsulation, OnDestroy, ViewChild, ElementRef } from "@angular/core";
+import { Component, Input, forwardRef, AfterViewInit, TemplateRef, Output, HostListener, OnChanges, ViewEncapsulation, OnDestroy, ViewChild, ElementRef, Attribute } from "@angular/core";
 
 import { NG_VALUE_ACCESSOR, ControlValueAccessor, FormControl } from "@angular/forms";
+import { Subscribable } from 'rxjs';
 export const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => DepartmentFormComponent),
@@ -28,15 +29,23 @@ export class DepartmentFormComponent implements ControlValueAccessor, AfterViewI
   errors: Array<any> = [];
 
   @ViewChild('input') inputRef: ElementRef;
-  
+
   @ViewChild('label') labelRef: ElementRef;
 
   @Input() pH: string;
+  /**
+   *
+   *
+   * @type {string}
+   * @memberof DepartmentFormComponent
+   */
+  // @Input() customClass!: string;
 
   public constructor(
+    @Attribute('customClass') private customClass: string,
     private element: ElementRef
   ) {
-
+    
   }
 
   public ngOnChanges() {
@@ -64,7 +73,7 @@ export class DepartmentFormComponent implements ControlValueAccessor, AfterViewI
     }
   }
 
-  onChange(e: Event, value: any) {
+  onChange(e: Event, value: any): void {
 
     this.innerValue = value;
 
