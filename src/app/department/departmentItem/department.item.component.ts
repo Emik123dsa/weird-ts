@@ -1,8 +1,12 @@
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from "@angular/core";
-import { Department, DepartmentAccurate } from "../../core/models";
+import { Department } from "../../core/models";
 
 import { fromEvent, Observable, of, Subscription } from "rxjs";
 import { filter, map } from 'rxjs/operators';
+import { AppState } from '../../store/state/app.state';
+import { select, Store } from '@ngrx/store';
+import { selectDropDown } from '../../store/selectors/utils.selector';
+import { GetDropDown } from '../../store/actions/utils.action';
 
 @Component({
   selector: "department-item",
@@ -11,14 +15,15 @@ import { filter, map } from 'rxjs/operators';
 })
 export class DepartmentItem implements OnInit, OnDestroy {
 
-  @Input() context: { [key: number]: Department<DepartmentAccurate> };
+  private $dropDown = this._store.pipe(select(selectDropDown));
+
+  @Input() context: { [key: number]: Department };
 
   @Output() editItem: EventEmitter<any> = new EventEmitter<MouseEvent>();
 
   @Output() deleteItem: EventEmitter<any> = new EventEmitter<MouseEvent>();
 
-  private openedModal: Subscription;
-
+  public constructor(private _store: Store<AppState>) { }
   public ngOnInit() {
 
   }
@@ -42,11 +47,14 @@ export class DepartmentItem implements OnInit, OnDestroy {
   }
 
   public activateDropdownState(key: boolean, value: number): void {
-    console.log('hello')
+    this._store.dispatch(new GetDropDown({
+      activated: true,
+      id: 123
+    }))
   }
 
   public assimilateDropdownState(key: boolean, value: number): void {
-    console.log('by')
+    // console.log('by')
   }
 
   public ngOnDestroy() { }

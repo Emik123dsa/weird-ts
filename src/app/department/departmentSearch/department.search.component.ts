@@ -13,11 +13,9 @@ import { distinctUntilChanged, map, pluck, debounceTime } from 'rxjs/operators';
 })
 export class DepartmentSearch implements OnInit, OnDestroy {
 
-  private departmentSearch = ({} as DepartmentQueryModel) as Subscription;
+  private departmentSearch: Subscription;
 
   private departmentForm: FormGroup;
-
-  protected query: Subscription;
 
   private queryControl: FormControl = new FormControl();
 
@@ -39,26 +37,25 @@ export class DepartmentSearch implements OnInit, OnDestroy {
     this.departmentSearch = fromEvent<KeyboardEvent>(this.document, 'keyup').pipe(
       distinctUntilChanged(),
       debounceTime(500),
-    ).subscribe((data: KeyboardEvent) => {
-  
+    ).subscribe((e: KeyboardEvent) => {
+
       this.departmentService.query(this.departmentForm.value).subscribe(data => {
         console.log(data)
       })
+
     });
   }
 
   public ngOnDestroy() {
-    if (this.query) this.query.unsubscribe();
+    if (this.departmentSearch) this.departmentSearch.unsubscribe();
   }
 
   public navigateToCreate(e: MouseEvent): void {
     this.router.navigateByUrl("/departments/create");
   }
 
-
   public createQuery(e: MouseEvent): void {
     e.preventDefault();
-
+    e.stopImmediatePropagation();
   }
-
 }

@@ -14,9 +14,9 @@ import { HttpClientModule } from "@angular/common/http";
 import { DepartmentItem } from "./departmentItem";
 
 import { DepartmentSearch } from "./departmentSearch";
-
+import { ReactiveComponentModule } from '@ngrx/component';
 @NgModule({
-  imports: [SharedModule, DepartmentRoutingModule],
+  imports: [ReactiveComponentModule, SharedModule, DepartmentRoutingModule],
   declarations: [DepartmentComponent, DepartmentEdit, DepartmentList, DepartmentCreate, DepartmentSearch, DepartmentItem],
 })
 export class DepartmentModule { }

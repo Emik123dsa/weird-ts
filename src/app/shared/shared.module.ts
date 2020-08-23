@@ -7,7 +7,7 @@ import { ShowAuthedDirective } from "./show-authed.directive";
 import { ClickOutsideDirective } from "./clickOutside";
 import { DepartmentFormComponent } from "./forms";
 import { ButtonComponent } from "./buttons";
-
+import { DropDownComponent } from "./dropdown";
 @NgModule({
   imports: [
     CommonModule,
@@ -21,7 +21,8 @@ import { ButtonComponent } from "./buttons";
     ShowAuthedDirective,
     DepartmentFormComponent,
     ClickOutsideDirective,
-    ButtonComponent
+    ButtonComponent,
+    DropDownComponent
   ],
   exports: [CommonModule,
     FormsModule,
@@ -32,7 +33,8 @@ import { ButtonComponent } from "./buttons";
     ButtonComponent,
     DepartmentFormComponent,
     ClickOutsideDirective,
-    HttpClientXsrfModule
+    HttpClientXsrfModule,
+    DropDownComponent
   ]
 })
 export class SharedModule { }

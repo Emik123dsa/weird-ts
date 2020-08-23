@@ -9,12 +9,18 @@
                     </div>
                     <div class="department__vendor-create__body col-12 col-xs-12 col-sm-12">
                         <div class="department__vendor-create__items">
+                            <div *ngFor="let item of (departmentInfoFields$ | ngrxPush).essential_fields" class="hello">
+                             {{item.key}}
+                            </div>
+
                             <department-form-inp formControlName="name" text="name" [c]="departmentForm.controls.name"
                                 [optional]="true" pH="Name" idd="name">
                             </department-form-inp>
+
                             <department-form-inp formControlName="API_SCHEMA_KEY" text="API_SCHEMA_KEY"
                                 [c]="departmentForm.controls.API_SCHEMA_KEY" [optional]="true" idd="API_SCHEMA_KEY"
                                 pH="API Key">
+
                             </department-form-inp>
                             <div class="row no-gutters mt-2">
                                 <div class="col-xl-9 col-sm-10 col-md-10 text-right">
