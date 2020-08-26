@@ -9,19 +9,16 @@
                     </div>
                     <div class="department__vendor-create__body col-12 col-xs-12 col-sm-12">
                         <div class="department__vendor-create__items">
-                            <div *ngFor="let item of (departmentInfoFields$ | ngrxPush).essential_fields" class="hello">
-                             {{item.key}}
+                            <div *ngFor="let fields of ((departmentFields$ | ngrxPush).info_fields) | keyvalue">
+                                <div *ngFor="let field_item of fields.value">
+                                    <department-form-inp formControlName="info_fields" [_value]="field_item.value"
+                                        [c]="departmentForm.controls.info_fields"
+                                        (dispatchToProps)="dispatchFieldsToProps('info_fields', fields.key, field_item)"
+                                        [optional]="true" [id]="field_item.key" [name]="field_item.name"
+                                        [pH]="field_item.key">
+                                    </department-form-inp>
+                                </div>
                             </div>
-
-                            <department-form-inp formControlName="name" text="name" [c]="departmentForm.controls.name"
-                                [optional]="true" pH="Name" idd="name">
-                            </department-form-inp>
-
-                            <department-form-inp formControlName="API_SCHEMA_KEY" text="API_SCHEMA_KEY"
-                                [c]="departmentForm.controls.API_SCHEMA_KEY" [optional]="true" idd="API_SCHEMA_KEY"
-                                pH="API Key">
-
-                            </department-form-inp>
                             <div class="row no-gutters mt-2">
                                 <div class="col-xl-9 col-sm-10 col-md-10 text-right">
                                     <department-button type="submit" text="Add new field" color="green" link>
@@ -37,16 +34,18 @@
                     </div>
                     <div class="department__vendor-create__body col-12 col-xs-12 col-sm-12">
                         <div class="department__vendor-create__items">
-                            <department-form-inp formControlName="owner" text="owner"
-                                [c]="departmentForm.controls.owner" [optional]="true" idd="owner" pH="Name">
-                            </department-form-inp>
-                            <department-form-inp formControlName="email" text="email"
-                                [c]="departmentForm.controls.email" [optional]="true" idd="email" pH="E-mail">
-                            </department-form-inp>
-                            <department-form-inp formControlName="telephone" text="telephone"
-                                [c]="departmentForm.controls.telephone" [optional]="true" idd="telephone"
-                                pH="Telephone">
-                            </department-form-inp>
+                            <div
+                                *ngFor="let fields  of ((departmentFields$ | ngrxPush).contact_person_fields) | keyvalue">
+                                <div *ngFor="let field_item of fields.value">
+                                    <department-form-inp formControlName="contact_person_fields"
+                                        [_value]="field_item.value"
+                                        (dispatchToProps)="dispatchFieldsToProps('contact_person_fields', fields.key, field_item)"
+                                        [c]="departmentForm.controls.contact_person_fields" [optional]="true"
+                                        [id]="field_item.key" [name]="field_item.name" [pH]="field_item.key">
+                                    </department-form-inp>
+                                </div>
+                            </div>
+
                             <div class="row no-gutters mt-2">
                                 <div class="col-xl-9 col-sm-10 col-md-10 text-right">
                                     <department-button type="submit" text="Add new field" color="green" link>
@@ -58,7 +57,9 @@
                 </div>
                 <div class="department__vendor-form__footer row justify-content-center align-items-center mt-4">
                     <div class="col-xl-4 col-xs-12 col-md-4 col-sm-6 pb-2">
-                        <department-button class="department__full-width" type="submit" text="Cancel" color="gray">
+                        <department-button [ngStyle]="{
+                            cursor: 'pointer'
+                        }" class="department__full-width text-center" text="Cancel" color="gray" link>
                         </department-button>
                     </div>
                     <div class="col-xl-8 col-xs-12 col-md-8 col-sm-6 pb-2">

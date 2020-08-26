@@ -18,7 +18,7 @@ if (environment.hmr) {
     hmrBootstrap(module, bootstrap);
   } else {
     console.error("HMR is not enabled!");
-    console.log("RUN `yarn run pre-dev`, it will be carry on your bundle with enabled HMR");
+    console.log("RUN `yarn run start`, it will be carry on your bundle with enabled HMR");
   }
 } else {
   bootstrap().catch(err => console.log(err))

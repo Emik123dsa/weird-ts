@@ -1,74 +1,145 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import {
+    SetDepartmentsInfoFields,
+    SetDepartmentsContactPersonsFieldsSuccess,
+    SetDepartmentsContactPersonsFields,
+    DepartmentSubFieldsModel,
+    DepartmentFieldsModel,
+    SetDepartmentFieldsModel,
+    SetDepartmentsFieldsModel,
+} from './../../store/actions/department.action';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
-import { DepartmentService } from "../../core/services";
+import { DepartmentService } from '../../core/services';
 
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from "rxjs";
+import { Observable, of } from 'rxjs';
 import { Router } from '@angular/router';
-
-import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-import { Department, DepartmentFields, DepartmentSetterModel } from '../../core';
+import * as camelCase from 'camelcase';
+import {
+    FormBuilder,
+    FormGroup,
+    FormControl,
+    Validators,
+} from '@angular/forms';
+import {
+    Department,
+    DepartmentFields,
+    DepartmentSetterModel,
+} from '../../core';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../store/state/app.state';
-import { selectVendorContactPeresonsFields, selectVendorInfoFields } from '../../store/selectors/department.selector';
+import {
+    selectVendorContactPersonsFields,
+    selectVendorFields,
+    selectVendorInfoFields,
+} from '../../store/selectors/department.selector';
 import { take } from 'rxjs/operators';
 
 @Component({
-  selector: "<department-create-vendor>",
-  templateUrl: "./department.create.component.html",
-  styleUrls: ["./department.create.component.scss"],
+    selector: '<department-create-vendor>',
+    templateUrl: './department.create.component.html',
+    styleUrls: ['./department.create.component.scss'],
 })
-export class DepartmentCreate implements OnInit, OnDestroy {
+export class DepartmentCreateComponent implements OnInit, OnDestroy {
+    public title = 'Department Create';
 
-  public title: string = "Department Create";
+    private departmentFields$ = this._store.pipe(select(selectVendorFields));
 
-  private departmentInfoFields$ = this._store.pipe(select(selectVendorInfoFields));
+    private departmentForm: FormGroup;
 
-  private departmentContactPersonsFields$ = this._store.pipe(select(selectVendorContactPeresonsFields));
+    private errors: Object = {};
 
-  private departmentForm: FormGroup;
+    public constructor(
+        private departmentService: DepartmentService,
+        private router: ActivatedRoute,
+        private route: Router,
+        private fB: FormBuilder,
+        private _store: Store<AppState>,
+    ) {
+        this.departmentFields$.subscribe(
+            (
+                data: Pick<Department, 'info_fields' | 'contact_person_fields'>,
+            ): void => {
+                const infoFields = this.convertToNormalFormGroup(
+                    data.info_fields,
+                );
+                const contactPersonsFields = this.convertToNormalFormGroup(
+                    data.contact_person_fields,
+                );
+                this.departmentForm = this.fB.group({
+                    info_fields: infoFields,
+                    contact_person_fields: contactPersonsFields,
+                } as Pick<Department, 'info_fields' | 'contact_person_fields'>);
+            },
+        );
+    }
 
-  private errors: Object = {};
+    protected convertToNormalFormGroup<
+        T extends keyof DepartmentFields<K, K>,
+        K extends DepartmentSetterModel
+    >({ essential_fields, additional_fields }: DepartmentFields<K, K>): Object {
+        const selectedEssentialFields: Object = essential_fields.reduce(
+            (acc: K, sub: K): Object => {
+                acc = { ...acc, [sub.name]: sub.value };
+                return acc;
+            },
+            [],
+        );
 
-  public constructor(
-    private departmentService: DepartmentService,
-    private router: ActivatedRoute,
-    private route: Router,
-    private fB: FormBuilder,
-    private _store: Store<AppState>
-  ) {
+        const selectedAdditionalFields: Object = additional_fields.reduce(
+            (
+                acc: DepartmentSetterModel,
+                sub: DepartmentSetterModel,
+            ): Object => {
+                acc = { ...acc, [sub.name]: sub.value };
+                return acc;
+            },
+            [],
+        );
 
-    this.departmentForm = this.fB.group({
-      id: "" as string,
-      name: "" as string,
-      API_SCHEMA_KEY: "" as string,
-      email: "" as string,
-      telephone: "" as string,
-      owner: "" as string,
-    });
+        return Object.assign(selectedEssentialFields, selectedAdditionalFields);
+    }
 
-   
-  }
-  public ngOnDestroy() {
-   
-  }
+    public dispatchFieldsToProps(
+        type: string,
+        sub_type?: string,
+        item?: DepartmentSetterModel,
+    ): void {
+        const mutatedFields: SetDepartmentsFieldsModel = {
+            fields: type as DepartmentFieldsModel,
+            sub_fields: sub_type as DepartmentSubFieldsModel,
+            regenerator: {
+                key: item.key,
+                value: this.departmentForm.value[type][item.name],
+                name: item.name,
+            },
+        };
+        switch (type) {
+            case 'info_fields':
+                this._store.dispatch(
+                    new SetDepartmentsInfoFields(mutatedFields),
+                );
+                break;
+            case 'contact_person_fields':
+                this._store.dispatch(
+                    new SetDepartmentsContactPersonsFields(mutatedFields),
+                );
+                break;
+        }
+    }
 
-  public ngOnInit() {
+    public ngOnDestroy() {
+        if (this.departmentFields$) {
+            this.departmentFields$.pipe(take(1));
+        }
+    }
 
-  }
+    public ngOnInit() {}
 
-  public createForm(e: MouseEvent): void {
+    public createForm(e: MouseEvent): void {
+        e.preventDefault();
+        e.stopImmediatePropagation();
 
-    e.stopImmediatePropagation();
-
-    console.log(this.departmentForm.value)
-
-    // this.departmentService.save(this.departmentForm.value).subscribe(data => {
-    //   console.log(data)
-    // }, err => { 
-    //     console.log(err)
-    // }) 
-
-  }
-
+        console.log(this.departmentForm.value);
+    }
 }

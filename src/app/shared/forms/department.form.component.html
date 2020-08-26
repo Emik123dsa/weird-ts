@@ -1,10 +1,12 @@
 <div class="row justify-content-center no-gutters">
-    <label [ngClass]="customClass ? customClass : 'col-xl-6 col-sm-8 col-xs-12'" [attr.for]="idd">
-        <input class="department__vendor-input" #input id="{{idd}}" type="{{type}}"
-            (keyup)="onChange($event, input.value)" />
-        <div #label class="label-control">{{pH}}</div>
+    <label [ngClass]="customClass ? customClass : 'col-xl-6 col-sm-8 col-xs-12'" [attr.for]="id">
+        <input class="department__vendor-input" #input [id]="id" [type]="type"
+            (change)="onChange('change', { key: input.name, value: input.value })"
+            (keyup)="onChange('keyup', { key: input.name, value: input.value })" [name]="name" [value]="_value" />
+        <div #label [class.label-control__active]="input.value | length" class="label-control">{{pH}}</div>
         <div class="error-control">
             <span *ngFor="let error of errors">{{error}}</span>
+
         </div>
     </label>
 </div>

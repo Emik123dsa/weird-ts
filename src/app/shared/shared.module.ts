@@ -8,6 +8,8 @@ import { ClickOutsideDirective } from "./clickOutside";
 import { DepartmentFormComponent } from "./forms";
 import { ButtonComponent } from "./buttons";
 import { DropDownComponent } from "./dropdown";
+import { DepartmentFormPipe } from "./forms/department.form.pipe";
+import { CamelCasePipe } from "./camelcase.pipe";
 @NgModule({
   imports: [
     CommonModule,
@@ -22,7 +24,9 @@ import { DropDownComponent } from "./dropdown";
     DepartmentFormComponent,
     ClickOutsideDirective,
     ButtonComponent,
-    DropDownComponent
+    DropDownComponent,
+    DepartmentFormPipe,
+    CamelCasePipe
   ],
   exports: [CommonModule,
     FormsModule,
@@ -34,7 +38,9 @@ import { DropDownComponent } from "./dropdown";
     DepartmentFormComponent,
     ClickOutsideDirective,
     HttpClientXsrfModule,
-    DropDownComponent
+    DropDownComponent,
+    DepartmentFormPipe,
+    CamelCasePipe
   ]
 })
 export class SharedModule { }

@@ -4,32 +4,61 @@
     </div>
     <div class="department__list">
         <div class="container">
-            <div *ngIf="( departments$ | async).length > 0; else empty" class="department__list-wrapper row mt-4">
-                <department-item class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-xs-6 department__animation-item"
-                    *ngFor="let item of ( departments$ | async) | keyvalue" [ngStyle]="{
-                    animationDelay: 0.075 * item.key + 's'
-                }" [context]="item">
+            <div
+                *ngIf="(departments$ | async).length > 0; else empty"
+                class="department__list-wrapper row mt-4"
+            >
+                <department-item
+                    class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-xs-6 department__animation-item"
+                    *ngFor="let item of departments$ | async | keyvalue"
+                    [ngStyle]="{
+                        animationDelay: 0.075 * item.key + 's'
+                    }"
+                    [context]="item"
+                >
                 </department-item>
             </div>
             <ng-template #empty>
                 <div class="row no-gutters mt-4">
                     <div class="col-12 text-center">
-                        <p> Your departments list is empty</p>
-                        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
-                            xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512"
-                            style="enable-background:new 0 0 512 512;" width="100" hegith="100" xml:space="preserve">
-                            <circle style="fill:#FFCA28;" cx="256" cy="256" r="256" />
+                        <p>Your departments list is empty</p>
+                        <svg
+                            version="1.1"
+                            id="Capa_1"
+                            xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink"
+                            x="0px"
+                            y="0px"
+                            viewBox="0 0 512 512"
+                            style="enable-background: new 0 0 512 512"
+                            width="100"
+                            hegith="100"
+                            xml:space="preserve"
+                        >
+                            <circle
+                                style="fill: #ffca28"
+                                cx="256"
+                                cy="256"
+                                r="256"
+                            />
 
-                            <path style="fill:#6D4C41;"
+                            <path
+                                style="fill: #6d4c41"
                                 d="M399.68,208.32c-8.832,0-16-7.168-16-16c0-17.632-14.336-32-32-32s-32,14.368-32,32
-		c0,8.832-7.168,16-16,16s-16-7.168-16-16c0-35.296,28.704-64,64-64s64,28.704,64,64C415.68,201.184,408.512,208.32,399.68,208.32z" />
-                            <path style="fill:#6D4C41;"
+		c0,8.832-7.168,16-16,16s-16-7.168-16-16c0-35.296,28.704-64,64-64s64,28.704,64,64C415.68,201.184,408.512,208.32,399.68,208.32z"
+                            />
+                            <path
+                                style="fill: #6d4c41"
                                 d="M207.68,208.32c-8.832,0-16-7.168-16-16c0-17.632-14.368-32-32-32s-32,14.368-32,32
-		c0,8.832-7.168,16-16,16s-16-7.168-16-16c0-35.296,28.704-64,64-64s64,28.704,64,64C223.68,201.184,216.512,208.32,207.68,208.32z" />
+		c0,8.832-7.168,16-16,16s-16-7.168-16-16c0-35.296,28.704-64,64-64s64,28.704,64,64C223.68,201.184,216.512,208.32,207.68,208.32z"
+                            />
 
-                            <path style="fill:#FAFAFA;" d="M437.696,294.688c-3.04-4-7.744-6.368-12.736-6.368H86.4c-5.024,0-9.728,2.336-12.736,6.336
+                            <path
+                                style="fill: #fafafa"
+                                d="M437.696,294.688c-3.04-4-7.744-6.368-12.736-6.368H86.4c-5.024,0-9.728,2.336-12.736,6.336
 	c-3.072,4.032-4.032,9.184-2.688,14.016C94.112,390.88,170.08,448.32,255.648,448.32s161.536-57.44,184.672-139.648
-	C441.696,303.84,440.736,298.688,437.696,294.688z" />
+	C441.696,303.84,440.736,298.688,437.696,294.688z"
+                            />
                         </svg>
                     </div>
                 </div>

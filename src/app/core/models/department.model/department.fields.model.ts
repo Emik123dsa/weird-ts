@@ -7,6 +7,7 @@
 export interface DepartmentSetterModel {
   key: string;
   value: string;
+  name?: string;
 }
 /**
  * DepartmentFields sagas
