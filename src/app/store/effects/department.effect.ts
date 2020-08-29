@@ -16,6 +16,10 @@ import {
     SetCurrentDepartmentSuccess,
     RemoveCurrentDepartment,
     RemoveCurrentDepartmentSuccess,
+    DemolishDepartment,
+    DemolishDepartmentSuccess,
+    AddDepartment,
+    AddDepartmentSuccess,
 } from './../actions/department.action';
 
 import { Effect, ofType, Actions } from '@ngrx/effects';
@@ -255,6 +259,39 @@ export class DepartmentEffect {
         switchMap(
             (): Observable<RemoveCurrentDepartmentSuccess> => {
                 return of(new RemoveCurrentDepartmentSuccess());
+            },
+        ),
+    );
+
+    @Effect()
+    demolishDepartment$ = this._actions$.pipe(
+        ofType<DemolishDepartment>(EnumDepartmentActions.DemolishDepartment),
+        map((data) => data.payload),
+        distinctUntilChanged(),
+        withLatestFrom(this._store.pipe(select(selectDepartmentsList))),
+        switchMap(
+            ([department, departments]): Observable<
+                DemolishDepartmentSuccess
+            > => {
+                return of(
+                    new DemolishDepartmentSuccess(
+                        departments.filter((data) => 
+                            data.id !== department.id
+                        ),
+                    ),
+                );
+            },
+        ),
+    );
+
+    @Effect()
+    addDepartment$ = this._actions$.pipe(
+        ofType<AddDepartment>(EnumDepartmentActions.AddDepartment),
+        map((data) => data.payload),
+        withLatestFrom(this._store.pipe(select(selectDepartmentsList))),
+        switchMap(
+            ([department, departments]): Observable<AddDepartmentSuccess> => {
+                return of(new AddDepartmentSuccess(departments));
             },
         ),
     );

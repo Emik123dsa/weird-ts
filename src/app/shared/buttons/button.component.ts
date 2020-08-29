@@ -9,6 +9,10 @@ import {
     ViewChild,
     EventEmitter,
 } from '@angular/core';
+import { AppState } from '../../store/state/app.state';
+import { Store, select } from '@ngrx/store';
+import { selectDropDown } from '../../store/selectors/utils.selector';
+import { DropDownModel, Department } from '../../core';
 
 export type ButtonColor = 'gray' | 'red' | 'green';
 /**
@@ -26,7 +30,9 @@ export type ButtonColor = 'gray' | 'red' | 'green';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ButtonComponent implements OnInit {
-    private condition: boolean = false;
+    @Input() private id!: Pick<Department, 'id'>;
+    @Input() private dropDown!: DropDownModel;
+    @Input() private condition!: boolean;
     /**
      * Kind of the button, which you want to seize
      *

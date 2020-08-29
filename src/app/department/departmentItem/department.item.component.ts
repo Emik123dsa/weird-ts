@@ -1,4 +1,7 @@
-import { ModalModel } from './../../core/models/utils.model/utils.model';
+import {
+    ModalModel,
+    DropDownModel,
+} from './../../core/models/utils.model/utils.model';
 import { Observable } from 'rxjs';
 import { GetModal } from './../../store/actions/utils.action';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -44,9 +47,15 @@ export interface KeyAndValueOfDepartment {
     styleUrls: ['./department.item.component.scss'],
 })
 export class DepartmentItem implements OnInit, OnDestroy {
-    protected dropDown$ = this._store.pipe(select(selectDropDown));
-    protected context$ = this._store.pipe(select(selectDepartment));
-    protected modalActivated$ = this._store.pipe(select(selectModals));
+    protected dropDown$: Observable<DropDownModel> = this._store.pipe(
+        select(selectDropDown),
+    );
+    protected context$: Observable<Department> = this._store.pipe(
+        select(selectDepartment),
+    );
+    protected modalActivated$: Observable<ModalModel> = this._store.pipe(
+        select(selectModals),
+    );
     /**
      * Context
      *
@@ -73,14 +82,12 @@ export class DepartmentItem implements OnInit, OnDestroy {
      * @memberof DepartmentItem
      */
     public deleteItemCurrent(e: number): void {
-        if (e) {
-            this._store.dispatch(
-                new GetModal({
-                    activated: true,
-                    id: e,
-                }),
-            );
-        }
+        this._store.dispatch(
+            new GetModal({
+                activated: true,
+                id: e,
+            }),
+        );
     }
     /**
      * Edit current item
@@ -89,10 +96,8 @@ export class DepartmentItem implements OnInit, OnDestroy {
      * @returns {Promise<boolean>}
      * @memberof DepartmentItem
      */
-    public editItemCurrent(e: number): Promise<boolean> {
-        if (e) {
-            return this._router.navigate(['departments', 'edit', e]);
-        }
+    public editItemCurrent(e: number): void {
+        if (e) this._router.navigate(['departments', 'edit', e]);
     }
     /**
      * Implementation of NgOnInit

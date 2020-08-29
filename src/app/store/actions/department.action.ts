@@ -52,7 +52,12 @@ export enum EnumDepartmentActions {
     /**
      * REMOVE DEPARTMENT FROM STORE | SERVICE
      */
-    DemolishDepartment = '[Department] Demolish Department',
+    DemolishDepartment = '[Department] Demolish Department From Store',
+    AddDepartment = '[Department] Add Department',
+
+    DemolishDepartmentSuccess = '[Department] Demolish Department From Store Success',
+    AddDepartmentSuccess = '[Department] Add Department Success',
+    
     DemolishAdditionalFields = '[Department] Demolish Department Fields',
 
     RemoveCurrentDepartmentSuccess = '[Department] Remove Current Department Success',
@@ -218,6 +223,26 @@ export class RemoveCurrentDepartmentSuccess implements Action {
     public readonly type = EnumDepartmentActions.RemoveCurrentDepartmentSuccess;
 }
 
+export class DemolishDepartment implements Action {
+    public readonly type = EnumDepartmentActions.DemolishDepartment;
+    constructor(public payload: Department) {}
+}
+
+export class DemolishDepartmentSuccess implements Action {
+    public readonly type = EnumDepartmentActions.DemolishDepartmentSuccess;
+    constructor(public payload: Department[]) {}
+}
+
+export class AddDepartment implements Action {
+    public readonly type = EnumDepartmentActions.AddDepartment;
+    constructor(public payload: Department) {}
+}
+
+export class AddDepartmentSuccess implements Action {
+    public readonly type = EnumDepartmentActions.AddDepartmentSuccess;
+    constructor(public payload: Department[]) {}
+}
+
 export type DepartmentActions =
     | GetDepartment
     | GetDepartments
@@ -234,4 +259,8 @@ export type DepartmentActions =
     | SetCurrentDepartment
     | SetCurrentDepartmentSuccess
     | RemoveCurrentDepartment
-    | RemoveCurrentDepartmentSuccess;
+    | RemoveCurrentDepartmentSuccess
+    | DemolishDepartment
+    | DemolishDepartmentSuccess
+    | AddDepartment
+    | AddDepartmentSuccess;

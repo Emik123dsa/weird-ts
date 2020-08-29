@@ -1,9 +1,14 @@
 .header {
+  height: 56px;
   &__vendor {
     background: rgba(231, 76, 60, 0.8);
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
     padding: 10px 0;
-
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 9999;
+    // height: 60px;
     &-title {
       h2 {
         text-transform: capitalize;

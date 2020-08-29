@@ -1,6 +1,4 @@
 <router-outlet></router-outlet>
 
-<department-modal
-    [modalActivated]="modalActivated$ | ngrxPush"
-    [modalContext]="modalContext$ | ngrxPush"
-></department-modal>
+<department-modal class="department__form-modal" *ngIf="(modalActivated$ | ngrxPush).activated"
+    [modalActivated]="modalActivated$ | ngrxPush" [modalContext]="modalContext$ | ngrxPush"></department-modal>

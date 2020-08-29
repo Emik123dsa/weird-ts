@@ -1,8 +1,5 @@
 <div class="department__vendor-item department__animation-item item-lift mb-3">
-    <div
-        *ngIf="context.value.activated"
-        class="department__vendor-item__wrapper"
-    >
+    <div *ngIf="context.value.activated" class="department__vendor-item__wrapper">
         <div class="department__vendor-header">
             <span class="department__vendor-header__title">
                 {{ context.value.department_name }}
@@ -10,38 +7,21 @@
         </div>
         <div class="department__vendor-body">
             <div class="department__vendor-photo__wrapper">
-                <img
-                    class="department__item-img"
-                    src="/img/department.default.jpg"
-                    [alt]="context.id"
-                />
+                <img class="department__item-img" src="/img/department.default.jpg" [alt]="context.id" />
             </div>
         </div>
         <div class="department__vendor-footer">
-            <department-button
-                (onPushBtn)="activeDropdownState(true, context.value.id)"
-                class="department__btn-full-width"
-                type="submit"
-                text="Open"
-                color="green"
-                arrow="true"
-                link
-            >
+            <department-button (onPushBtn)="activeDropdownState(true, context.value.id)"
+                class="department__btn-full-width" type="submit" [dropDown]="dropDown$ |ngrxPush" text="Open"
+                [id]="context.value.id" color="green" arrow="true" link>
             </department-button>
 
-            <div
-                (outsideClick)="closeDropDownState(false)"
-                *ngIf="
+            <div (outsideClick)="closeDropDownState(false)" *ngIf="
                     (dropDown$ | ngrxPush).activated &&
                     (dropDown$ | ngrxPush).id === context.value.id
-                "
-            >
-                <department-dropdown
-                    class="department__dropdown-vendor"
-                    [props]="context"
-                    (editItem)="editItemCurrent(context.value.id)"
-                    (deleteItem)="deleteItemCurrent(context.value.id)"
-                >
+                ">
+                <department-dropdown class="department__dropdown-vendor" [props]="context"
+                    (editItem)="editItemCurrent(context.value.id)" (deleteItem)="deleteItemCurrent(context.value.id)">
                 </department-dropdown>
             </div>
         </div>
