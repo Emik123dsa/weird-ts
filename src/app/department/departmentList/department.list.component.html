@@ -9,10 +9,11 @@
                 class="department__list-wrapper row mt-4"
             >
                 <department-item
-                    class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-xs-6 department__animation-item"
+                    class="col-xl-3 col-lg-3 col-md-4 col-sm-6 col-xs-6 col-10 department__list-item department__animation-item"
                     *ngFor="let item of departments$ | async | keyvalue"
                     [ngStyle]="{
-                        animationDelay: 0.075 * item.key + 's'
+                        animationDelay: 0.075 * item.key + 's',
+                        zIndex: 1000 - item.key
                     }"
                     [context]="item"
                 >

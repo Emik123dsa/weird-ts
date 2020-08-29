@@ -2,18 +2,34 @@
     <div class="container">
         <div class="row justify-content-between no-gutters">
             <div class="col-12 col-xs-12 col-sm-12 col-md-12">
-                <form [formGroup]="departmentForm" (submit)="createQuery($event)" class="department__search-form">
+                <form
+                    [formGroup]="departmentForm"
+                    (submit)="createQuery($event)"
+                    class="department__search-form"
+                >
                     <div class="row align-items-center">
                         <div class="col-8">
-                            <department-form-inp #search formControlName="query" text="query" customClass="col-12"
-                                [c]="departmentForm.controls.query" [optional]="true" pH="Search" idd="query">
+                            <department-form-inp
+                                text="query"
+                                formControlName="query"
+                                customClass="col-12"
+                                [c]="departmentForm.controls.query"
+                                name="super_query"
+                                [optional]="true"
+                                pH="Search"
+                                idd="query"
+                            >
                             </department-form-inp>
                         </div>
                         <div class="col-4">
                             <department-button
-                                (click)="navigateToCreate($event)" type="submit"
-                                class="department__btn-middle department__full-width" text="Add new field" color="green"
-                                link>
+                                (click)="navigateToCreate($event)"
+                                type="submit"
+                                class="department__btn-middle department__full-width"
+                                text="Add new field"
+                                color="green"
+                                link
+                            >
                             </department-button>
                         </div>
                     </div>

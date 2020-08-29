@@ -93,7 +93,7 @@ export class DepartmentFormComponent
 
     onChange(e: string, value: DepartmentSetterModel): void {
         this.innerValue = { ...this.c.value, [value.key]: value.value };
-
+        console.log(value);
         this.propagateChange(this.innerValue);
 
         if (this.dispatchToProps) {

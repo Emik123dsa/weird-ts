@@ -1,1 +1,6 @@
 <router-outlet></router-outlet>
+
+<department-modal
+    [modalActivated]="modalActivated$ | ngrxPush"
+    [modalContext]="modalContext$ | ngrxPush"
+></department-modal>

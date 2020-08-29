@@ -79,6 +79,39 @@ export const initialDepartmentState: DepartmentState = {
                 additional_fields: [{}],
             },
         },
+        {
+            id: 3,
+            department_name: 'Cardiology',
+            photo_vendor: '123',
+            activated: true,
+            info_fields: {
+                essential_fields: [
+                    {
+                        key: 'api',
+                        value: 'hello',
+                        name: 'api',
+                    },
+                    {
+                        key: 'how are you',
+                        value: 'hello',
+                    },
+                    {
+                        key: 'getting on',
+                        value: 'hello',
+                    },
+                ],
+                additional_fields: [],
+            },
+            contact_person_fields: {
+                essential_fields: [
+                    {
+                        key: 'vova',
+                        value: 'hello',
+                    },
+                ],
+                additional_fields: [{}],
+            },
+        },
     ] as Department[],
     currentDepartment: {} as Department,
     vendorFields: {

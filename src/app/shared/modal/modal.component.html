@@ -1,0 +1,48 @@
+<div *ngIf="modalActivated.activated">
+    <div class="department__modal">
+        <div class="container">
+            <div class="department__modal-wrapper">
+                <div class="row justify-content-center">
+                    <div class="col-lg-3 col-xs-9 col-md-9 col-sm-9">
+                        <div class="department__modal-header">
+                            <div class="row mb-4">
+                                <div class="col-12">
+                                    <span>
+                                        Are you sure that you want to delete?
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="department__modal-body"></div>
+                        <div class="department__modal-footer">
+                            <div class="department__modal-cancel">
+                                <div class="row">
+                                    <div class="col-6 text-center">
+                                        <department-button
+                                            type="submit"
+                                            class="department__btn-middle department__full-width department_btn-cancel"
+                                            text="Cancel"
+                                            color="gray"
+                                            link
+                                        >
+                                        </department-button>
+                                    </div>
+                                    <div class="col-6 text-center">
+                                        <department-button
+                                            type="submit"
+                                            class="department__btn-middle department__full-width department_btn-accept"
+                                            text="Accept"
+                                            color="green"
+                                            link
+                                        >
+                                        </department-button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

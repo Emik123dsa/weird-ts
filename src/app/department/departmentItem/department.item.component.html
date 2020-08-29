@@ -32,14 +32,15 @@
             <div
                 (outsideClick)="closeDropDownState(false)"
                 *ngIf="
-                    (dropDown$ | async).activated &&
-                    (dropDown$ | async).id === context.value.id
+                    (dropDown$ | ngrxPush).activated &&
+                    (dropDown$ | ngrxPush).id === context.value.id
                 "
             >
                 <department-dropdown
+                    class="department__dropdown-vendor"
                     [props]="context"
                     (editItem)="editItemCurrent(context.value.id)"
-                    (deleteItem)="deleteItemCurrent($event)"
+                    (deleteItem)="deleteItemCurrent(context.value.id)"
                 >
                 </department-dropdown>
             </div>

@@ -1,0 +1,9 @@
+@media screen and (max-width: 678px) {
+    .department {
+        &__list {
+            &-wrapper {
+                justify-content: center;
+            }
+        }
+    }
+}

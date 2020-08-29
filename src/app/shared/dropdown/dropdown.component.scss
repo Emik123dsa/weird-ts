@@ -1,40 +1,51 @@
 .department {
-  &__vendor {
-    &-dropdown {
-      &__items {
-        margin: 0 !important;
-        padding: 0 !important;
-        list-style: none;
-      }
-      &__item {
-        a {
-          color: #fff;
-          padding: 4px 0;
-          padding-left: 10px;
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          svg {
-            margin-right: 10px;
-          }
+    &__vendor {
+        &-dropdown {
+            &__items {
+                margin: 0 !important;
+                padding: 0 !important;
+                list-style: none;
+            }
+            &__item {
+                a {
+                    color: #fff;
+                    padding: 4px 0;
+                    padding-left: 10px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    svg {
+                        margin-right: 10px;
+                    }
+                }
+                &:hover {
+                    a {
+                        cursor: pointer;
+                        border-radius: 4px;
+                        background: rgba(127, 140, 141, 1);
+                    }
+                }
+            }
         }
-        &:hover {
-          a {
-            cursor: pointer;
+        &-dropdown {
+            box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.75);
+            background: rgba(127, 140, 141, 0.75);
             border-radius: 4px;
-            background: rgba(127, 140, 141, 1);
-          }
+            position: absolute;
+            height: auto;
+            width: 50%;
+            right: calc(-50% + 35px);
         }
-      }
     }
-    &-dropdown {
-      box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.75);
-      background: rgba(127, 140, 141, 0.75);
-      border-radius: 4px;
-      position: absolute;
-      height: auto;
-      width: 50%;
-      right: calc(-50% + 35px);
+}
+
+@media screen and (max-width: 726px) {
+    .department {
+        &__vendor {
+            &-dropdown {
+                width: 100%;
+                left: 0;
+            }
+        }
     }
-  }
 }

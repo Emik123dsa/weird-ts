@@ -1,46 +1,51 @@
-import { NgModule } from "@angular/core";
-import { CommonModule } from "@angular/common";
-import { HttpClientModule, HttpClientXsrfModule } from "@angular/common/http";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { RouterModule } from "@angular/router";
-import { ShowAuthedDirective } from "./show-authed.directive";
-import { ClickOutsideDirective } from "./clickOutside";
-import { DepartmentFormComponent } from "./forms";
-import { ButtonComponent } from "./buttons";
-import { DropDownComponent } from "./dropdown";
-import { DepartmentFormPipe } from "./forms/department.form.pipe";
-import { CamelCasePipe } from "./camelcase.pipe";
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { HttpClientModule, HttpClientXsrfModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { ShowAuthedDirective } from './show-authed.directive';
+import { ClickOutsideDirective } from './clickOutside';
+import { DepartmentFormComponent } from './forms';
+import { ButtonComponent } from './buttons';
+import { DropDownComponent } from './dropdown';
+import { DepartmentFormPipe } from './forms/department.form.pipe';
+import { CamelCasePipe } from './camelcase.pipe';
+import ModalComponent from './modal/modal.component';
+
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    RouterModule,
-    HttpClientModule,
-    HttpClientXsrfModule
-  ],
-  declarations: [
-    ShowAuthedDirective,
-    DepartmentFormComponent,
-    ClickOutsideDirective,
-    ButtonComponent,
-    DropDownComponent,
-    DepartmentFormPipe,
-    CamelCasePipe
-  ],
-  exports: [CommonModule,
-    FormsModule,
-    HttpClientModule,
-    ReactiveFormsModule,
-    RouterModule,
-    ShowAuthedDirective,
-    ButtonComponent,
-    DepartmentFormComponent,
-    ClickOutsideDirective,
-    HttpClientXsrfModule,
-    DropDownComponent,
-    DepartmentFormPipe,
-    CamelCasePipe
-  ]
+    imports: [
+        CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        RouterModule,
+        HttpClientModule,
+        HttpClientXsrfModule,
+    ],
+    declarations: [
+        ShowAuthedDirective,
+        DepartmentFormComponent,
+        ClickOutsideDirective,
+        ButtonComponent,
+        DropDownComponent,
+        DepartmentFormPipe,
+        CamelCasePipe,
+        ModalComponent,
+    ],
+    exports: [
+        CommonModule,
+        FormsModule,
+        HttpClientModule,
+        ReactiveFormsModule,
+        RouterModule,
+        ShowAuthedDirective,
+        ButtonComponent,
+        DepartmentFormComponent,
+        ClickOutsideDirective,
+        HttpClientXsrfModule,
+        DropDownComponent,
+        DepartmentFormPipe,
+        CamelCasePipe,
+        ModalComponent,
+    ],
 })
-export class SharedModule { }
+export class SharedModule {}
