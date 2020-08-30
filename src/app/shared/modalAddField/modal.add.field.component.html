@@ -1,0 +1,86 @@
+<div>
+    <div class="department__modal">
+        <div class="department__modal-wrapper">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-6 col-xs-12 col-md-12 col-sm-12">
+                        <div
+                            (outsideClick)="cancelModalState($event)"
+                            class="department__modal-inner"
+                        >
+                            <div class="department__modal-header">
+                                <div class="row mb-4">
+                                    <div class="col-12 text-center">
+                                        <span>
+                                            Please, fill out the field below:
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="department__modal-body">
+                                <form
+                                    (ngSubmit)="storeNewField($event)"
+                                    [formGroup]="fieldsGroup"
+                                    class="row no-gutters justify-content-center mb-3"
+                                >
+                                    <div class="col-8">
+                                        <department-form-inp
+                                            formControlName="fields"
+                                            customClass="col-12"
+                                            [c]="fieldsGroup.controls.fields"
+                                            name="super_key"
+                                            [optional]="true"
+                                            pH="Type name of the field ..."
+                                            idd="key"
+                                        >
+                                        </department-form-inp>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="department__modal-footer">
+                                <div class="department__modal-cancel">
+                                    <div
+                                        [ngStyle]="{
+                                            marginTop:
+                                                fieldsGroup.invalid &&
+                                                (fieldsGroup.dirty ||
+                                                    fieldsGroup.touched)
+                                                    ? '28px'
+                                                    : '0px'
+                                        }"
+                                        class="row no-gutters"
+                                    >
+                                        <div class="col-6 text-center">
+                                            <department-button
+                                                type="submit"
+                                                class="department__btn-middle department__full-width department_btn-cancel"
+                                                text="Cancel"
+                                                (click)="
+                                                    cancelModalState($event)
+                                                "
+                                                color="gray"
+                                                link
+                                            >
+                                            </department-button>
+                                        </div>
+                                        <div class="col-6 text-center">
+                                            <department-button
+                                                (click)="storeNewField($event)"
+                                                type="submit"
+                                                class="department__btn-middle department__full-width department_btn-accept"
+                                                text="Accept"
+                                                color="green"
+                                                link
+                                            >
+                                            </department-button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

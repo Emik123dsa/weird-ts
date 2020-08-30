@@ -10,8 +10,8 @@ import { ButtonComponent } from './buttons';
 import { DropDownComponent } from './dropdown';
 import { DepartmentFormPipe } from './forms/department.form.pipe';
 import { CamelCasePipe } from './camelcase.pipe';
-import ModalComponent from './modal/modal.component';
-
+import { ModalDeleteComponent } from './modalDelete/modal.delete.component';
+import { ModalAddFieldComponent } from './modalAddField/modal.add.field.component';
 @NgModule({
     imports: [
         CommonModule,
@@ -29,7 +29,8 @@ import ModalComponent from './modal/modal.component';
         DropDownComponent,
         DepartmentFormPipe,
         CamelCasePipe,
-        ModalComponent,
+        ModalDeleteComponent,
+        ModalAddFieldComponent,
     ],
     exports: [
         CommonModule,
@@ -45,7 +46,8 @@ import ModalComponent from './modal/modal.component';
         DropDownComponent,
         DepartmentFormPipe,
         CamelCasePipe,
-        ModalComponent,
+        ModalDeleteComponent,
+        ModalAddFieldComponent,
     ],
 })
 export class SharedModule {}

@@ -93,7 +93,7 @@ export class DepartmentFormComponent
 
     onChange(e: string, value: DepartmentSetterModel): void {
         this.innerValue = { ...this.c.value, [value.key]: value.value };
-        console.log(value);
+
         this.propagateChange(this.innerValue);
 
         if (this.dispatchToProps) {
@@ -105,13 +105,7 @@ export class DepartmentFormComponent
         this.errors = [];
 
         for (const key in this.c.errors) {
-            if (this.c.errors.hasOwnProperty(key)) {
-                if (key === 'required') {
-                    this.errors.push('This field is required');
-                } else {
-                    this.errors.push(key);
-                }
-            }
+            this.errors.push(this.c.errors[key]);
         }
     }
 

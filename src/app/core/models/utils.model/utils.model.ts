@@ -3,8 +3,16 @@ export interface DropDownModel {
     id: number;
 }
 
+export type TypeModal =
+    | 'create'
+    | 'delete'
+    | 'change'
+    | 'info_fields'
+    | 'contact_person_fields';
+
 export interface ModalModel {
     activated: boolean;
+    type: TypeModal;
     id: number;
 }
 

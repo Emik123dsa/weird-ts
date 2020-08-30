@@ -6,6 +6,7 @@
         <input
             class="department__vendor-input"
             #input
+            [class.label-control__error]="errors.length > 0"
             [id]="id"
             [type]="type"
             (change)="
@@ -22,8 +23,29 @@
         >
             {{ pH }}
         </div>
-        <div class="error-control">
-            <span *ngFor="let error of errors">{{ error }}</span>
+        <div *ngIf="c.invalid && (c.dirty || c.touched)" class="error-control">
+            <span *ngFor="let error of errors">
+                <div *ngFor="let sub_error of error">
+                    <div
+                        class="error-control__minlength"
+                        *ngIf="sub_error.minlength"
+                    >
+                        * The minimum length is 4 symbols.
+                    </div>
+                    <div
+                        class="error-control__required"
+                        *ngIf="sub_error.required"
+                    >
+                        * Please, fill out this field.
+                    </div>
+                    <div
+                        class="error-control__pattern"
+                        *ngIf="sub_error.pattern"
+                    >
+                        * Please, don't use spell symbols.
+                    </div>
+                </div>
+            </span>
         </div>
     </label>
 </div>

@@ -11,7 +11,8 @@ export const initialUtilsState: UtilsState = {
         id: 0 as number,
     } as DropDownModel,
     modal: {
-        activated: false as boolean,
-        id: 0 as number,
+        activated: false,
+        type: null,
+        id: 0,
     } as ModalModel,
 };

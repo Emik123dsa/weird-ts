@@ -6,6 +6,7 @@ import {
     DepartmentFieldsModel,
     SetDepartmentFieldsModel,
     SetDepartmentsFieldsModel,
+    RemoveCurrentDepartment,
 } from './../../store/actions/department.action';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
@@ -34,6 +35,7 @@ import {
     selectVendorInfoFields,
 } from '../../store/selectors/department.selector';
 import { take } from 'rxjs/operators';
+import { GetModal, GetDropDown } from '../../store/actions/utils.action';
 
 @Component({
     selector: '<department-create-vendor>',
@@ -51,8 +53,8 @@ export class DepartmentCreateComponent implements OnInit, OnDestroy {
 
     public constructor(
         private departmentService: DepartmentService,
-        private router: ActivatedRoute,
-        private route: Router,
+        private route: ActivatedRoute,
+        private router: Router,
         private fB: FormBuilder,
         private _store: Store<AppState>,
     ) {
@@ -119,6 +121,7 @@ export class DepartmentCreateComponent implements OnInit, OnDestroy {
                 this._store.dispatch(
                     new SetDepartmentsInfoFields(mutatedFields),
                 );
+
                 break;
             case 'contact_person_fields':
                 this._store.dispatch(
@@ -132,6 +135,21 @@ export class DepartmentCreateComponent implements OnInit, OnDestroy {
         if (this.departmentFields$) {
             this.departmentFields$.pipe(take(1));
         }
+    }
+
+    public addNewField<
+        T extends keyof Pick<
+            Department,
+            'info_fields' | 'contact_person_fields'
+        >
+    >(type: T) {
+        this._store.dispatch(
+            new GetModal({
+                activated: true,
+                type,
+                id: 0,
+            }),
+        );
     }
 
     public ngOnInit() {}

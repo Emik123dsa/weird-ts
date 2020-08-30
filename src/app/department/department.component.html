@@ -1,4 +1,12 @@
 <router-outlet></router-outlet>
 
-<department-modal class="department__form-modal" *ngIf="(modalActivated$ | ngrxPush).activated"
-    [modalActivated]="modalActivated$ | ngrxPush" [modalContext]="modalContext$ | ngrxPush"></department-modal>
+<department-modal-delete class="department__form-modal" *ngIf="(modalActivated$ | ngrxPush).activated 
+    && (modalActivated$ | ngrxPush).type === 'delete'
+    " [modalActivated]="modalActivated$ | ngrxPush" [modalContext]="modalContext$ | ngrxPush">
+</department-modal-delete>
+
+<department-add-field-modal *ngIf="(modalActivated$ | ngrxPush).activated 
+    && ((modalActivated$ | ngrxPush).type ===  'info_fields' ||
+    (modalActivated$ | ngrxPush).type ===  'contact_person_fields')
+    " [modalActivated]="modalActivated$ | ngrxPush" [modalContext]="modalContext$ | ngrxPush">
+</department-add-field-modal>

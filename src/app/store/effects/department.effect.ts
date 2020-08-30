@@ -152,6 +152,17 @@ export class DepartmentEffect {
                         }
                     },
                 );
+            } else {
+                if (
+                    !mergedMutatedFields.find(
+                        (data: DepartmentSetterModel) =>
+                            data.name === field.regenerator.name,
+                    )
+                ) {
+                    mutatedFields[field.sub_fields] = fields[
+                        field.sub_fields
+                    ].concat(field.regenerator);
+                }
             }
             return of(
                 new SetDepartmentsContactPersonsFieldsSuccess({
@@ -228,6 +239,17 @@ export class DepartmentEffect {
                         }
                     },
                 );
+            } else {
+                if (
+                    !mergedMutatedFields.find(
+                        (data: DepartmentSetterModel) =>
+                            data.name === field.regenerator.name,
+                    )
+                ) {
+                    mutatedFields[field.sub_fields] = fields[
+                        field.sub_fields
+                    ].concat(field.regenerator);
+                }
             }
 
             return of(
@@ -275,9 +297,7 @@ export class DepartmentEffect {
             > => {
                 return of(
                     new DemolishDepartmentSuccess(
-                        departments.filter((data) => 
-                            data.id !== department.id
-                        ),
+                        departments.filter((data) => data.id !== department.id),
                     ),
                 );
             },

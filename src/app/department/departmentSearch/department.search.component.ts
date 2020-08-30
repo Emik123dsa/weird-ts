@@ -43,10 +43,9 @@ export class DepartmentSearch implements OnDestroy, AfterViewInit {
         private router: Router,
         private fb: FormBuilder,
         private _store: Store<AppState>,
-        @Optional() @Inject(DOCUMENT) private document: Document,
     ) {
         this.departmentForm = this.fb.group({
-            query: 'sub_query',
+            query: '',
         } as DepartmentQueryModel);
     }
 
@@ -60,7 +59,6 @@ export class DepartmentSearch implements OnDestroy, AfterViewInit {
         )
             .pipe(distinctUntilChanged(), debounceTime(500))
             .subscribe((e: KeyboardEvent) => {
-                console.log(this.departmentForm.value.query);
                 this.departmentService
                     .query(this.departmentForm.value)
                     .subscribe((data) => {

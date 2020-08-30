@@ -5,7 +5,6 @@ import {
 import { Observable } from 'rxjs';
 import { GetModal } from './../../store/actions/utils.action';
 import { ActivatedRoute, Router } from '@angular/router';
-import { take, distinctUntilChanged } from 'rxjs/operators';
 import { Department } from './../../core/models/department.model/department.model';
 import { selectDepartment } from './../../store/selectors/department.selector';
 import {
@@ -85,6 +84,7 @@ export class DepartmentItem implements OnInit, OnDestroy {
         this._store.dispatch(
             new GetModal({
                 activated: true,
+                type: 'delete',
                 id: e,
             }),
         );
