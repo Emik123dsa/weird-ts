@@ -311,7 +311,19 @@ export class DepartmentEffect {
         withLatestFrom(this._store.pipe(select(selectDepartmentsList))),
         switchMap(
             ([department, departments]): Observable<AddDepartmentSuccess> => {
-                return of(new AddDepartmentSuccess(departments));
+                let departmentsList: Department[] = [];
+
+                if (
+                    !departments.some(
+                        (data: Department) => data.id === department.id,
+                    )
+                ) {
+                    departmentsList = departments.concat(department);
+                } else {
+                    departmentsList = departments;
+                }
+
+                return of(new AddDepartmentSuccess(departmentsList));
             },
         ),
     );

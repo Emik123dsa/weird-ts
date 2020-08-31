@@ -57,7 +57,7 @@ export enum EnumDepartmentActions {
 
     DemolishDepartmentSuccess = '[Department] Demolish Department From Store Success',
     AddDepartmentSuccess = '[Department] Add Department Success',
-    
+
     DemolishAdditionalFields = '[Department] Demolish Department Fields',
 
     RemoveCurrentDepartmentSuccess = '[Department] Remove Current Department Success',

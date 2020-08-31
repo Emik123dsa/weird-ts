@@ -7,6 +7,7 @@ import {
     SetDepartmentFieldsModel,
     SetDepartmentsFieldsModel,
     RemoveCurrentDepartment,
+    AddDepartment,
 } from './../../store/actions/department.action';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
@@ -62,15 +63,9 @@ export class DepartmentCreateComponent implements OnInit, OnDestroy {
             (
                 data: Pick<Department, 'info_fields' | 'contact_person_fields'>,
             ): void => {
-                const infoFields = this.convertToNormalFormGroup(
-                    data.info_fields,
-                );
-                const contactPersonsFields = this.convertToNormalFormGroup(
-                    data.contact_person_fields,
-                );
                 this.departmentForm = this.fB.group({
-                    info_fields: infoFields,
-                    contact_person_fields: contactPersonsFields,
+                    info_fields: data.info_fields,
+                    contact_person_fields: data.contact_person_fields,
                 } as Pick<Department, 'info_fields' | 'contact_person_fields'>);
             },
         );
@@ -131,6 +126,39 @@ export class DepartmentCreateComponent implements OnInit, OnDestroy {
         }
     }
 
+    public cancelDepartment(e: MouseEvent): void {
+        this.router.navigateByUrl('/departments');
+    }
+
+    public storeDepartment(e: MouseEvent) {
+        /**
+         *  GET ID FROM CURRENT TIME
+         */
+        const currentId: string = new Date().getTime().toString();
+
+        const name:
+            | DepartmentSetterModel
+            | undefined = this.departmentForm.value.info_fields[
+            'essential_fields'
+        ].find((data: DepartmentSetterModel): boolean => data.name === 'name');
+
+        if (this.departmentForm.value && this.departmentForm.valid) {
+            this._store.dispatch(
+                new AddDepartment({
+                    id: Number(currentId),
+                    department_name: name.value,
+                    photo_vendor: '',
+                    activated: true,
+                    info_fields: this.departmentForm.value.info_fields,
+                    contact_person_fields: this.departmentForm.value
+                        .contact_person_fields,
+                }),
+            );
+
+            this.cancelDepartment(e as MouseEvent);
+        }
+    }
+
     public ngOnDestroy() {
         if (this.departmentFields$) {
             this.departmentFields$.pipe(take(1));
@@ -153,11 +181,4 @@ export class DepartmentCreateComponent implements OnInit, OnDestroy {
     }
 
     public ngOnInit() {}
-
-    public createForm(e: MouseEvent): void {
-        e.preventDefault();
-        e.stopImmediatePropagation();
-
-        console.log(this.departmentForm.value);
-    }
 }

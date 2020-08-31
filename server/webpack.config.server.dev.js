@@ -34,14 +34,14 @@ module.exports = require('./webpack.config.js')({
     entry: {
         polyfills: ['./src/polyfills.ts'],
         'vendor.style': ['./src/assets/styles/main.sass'],
-        bootstrap: ['./src/bootstrap.ts', 'webpack-hot-middleware/client'],
+        server: ['./src/bootstrap.ts', 'webpack-hot-middleware/client'],
     },
     output: {
         filename: '[name].[hash:64].dev.js',
         chunkFilename: '[name].[hash:64].dev.js',
     },
     plugins,
-    target: 'web',
+    target: 'node',
     devtool: 'eval-source-map',
     perfomance: {
         hints: false,

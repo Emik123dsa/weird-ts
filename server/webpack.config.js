@@ -14,8 +14,13 @@ const autoprefixer = require('autoprefixer');
 const plugins = [
     new ProgressBarPlugin(),
     new webpack.ContextReplacementPlugin(
-        /angular(\\|\/)core/,
-        path.resolve(__dirname, 'src'),
+        /(.+)?angular(\\|\/)core(.+)?/,
+        path.join(__dirname, 'src'),
+        {},
+    ),
+    new webpack.ContextReplacementPlugin(
+        /(.+)?express(\\|\/)(.+)?/,
+        path.join(__dirname, 'src'),
         {},
     ),
     new CopyWebpackPlugin({
@@ -51,7 +56,9 @@ module.exports = (options) => ({
                     {
                         loader: 'awesome-typescript-loader',
                         options: {
-                            configFileName: path.resolve('tsconfig.json'),
+                            configFileName: path.resolve(
+                                'server/tsconfig.server.json',
+                            ),
                         },
                     },
                     'angular2-template-loader',

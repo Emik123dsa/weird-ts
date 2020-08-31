@@ -20,7 +20,7 @@ import {
     Output,
     EventEmitter,
 } from '@angular/core';
-// import { Department } from '../../core/models';
+
 import { AppState } from '../../store/state/app.state';
 import { select, Store } from '@ngrx/store';
 import {
@@ -97,7 +97,9 @@ export class DepartmentItem implements OnInit, OnDestroy {
      * @memberof DepartmentItem
      */
     public editItemCurrent(e: number): void {
-        if (e) this._router.navigate(['departments', 'edit', e]);
+        if (e) {
+            this._router.navigate(['departments', 'edit', e]);
+        }
     }
     /**
      * Implementation of NgOnInit

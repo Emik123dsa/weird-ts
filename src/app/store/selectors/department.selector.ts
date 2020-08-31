@@ -1,3 +1,5 @@
+import { Department } from './../../core/models/department.model/department.model';
+
 import { createSelector } from '@ngrx/store';
 import { DepartmentState } from '../state/department.state';
 import { AppState } from '../state/app.state';
@@ -9,6 +11,13 @@ export const selectDepartmentsList = createSelector(
     selectDepartments,
     (state: DepartmentState) => state.departments,
 );
+
+export const selectAlteredDepartment = (id: number) =>
+    createSelector(selectDepartmentsList, (allItems: Department[]) => {
+        return allItems
+            ? allItems.find((data: Department) => data.id === id)
+            : {};
+    });
 
 export const selectDepartment = createSelector(
     selectDepartments,

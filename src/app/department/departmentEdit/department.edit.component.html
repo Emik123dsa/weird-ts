@@ -1,1 +1,175 @@
-edit way
+<section class="department__vendor">
+    <div class="container">
+        <div
+            class="row justify-content-center no-gutters align-items-center mx-3 mb-4"
+        >
+            <form
+                [formGroup]="currentDepartmentForm"
+                (submit)="updateDepartment($event)"
+                class="col-xl-8 col-sm-10 col-md-12 col-xs-12"
+            >
+                <div
+                    class="department__vendor-create__info row justify-content-center align-items-center pb-4 mb-4"
+                >
+                    <div
+                        class="department__vendor-create__header col-xl-12 col-sm-12 col-xs-12 pb-4"
+                    >
+                        <h3 class="department__vendor-create__info-title">
+                            Department info
+                        </h3>
+                    </div>
+                    <div
+                        class="department__vendor-create__body col-12 col-xs-12 col-sm-12"
+                    >
+                        <div class="department__vendor-create__items">
+                            <div
+                                *ngFor="
+                                    let fields of Department.info_fields
+                                        | keyvalue
+                                "
+                            >
+                                <div *ngFor="let field_item of fields.value">
+                                    <department-form-inp
+                                        formControlName="info_fields"
+                                        [_value]="field_item.value"
+                                        [c]="
+                                            currentDepartmentForm.controls
+                                                .info_fields
+                                        "
+                                        (dispatchToProps)="
+                                            dispatchFieldsToProps(
+                                                'info_fields',
+                                                fields.key,
+                                                field_item
+                                            )
+                                        "
+                                        [optional]="true"
+                                        [id]="field_item.key"
+                                        [name]="field_item.name"
+                                        [pH]="field_item.key"
+                                    >
+                                    </department-form-inp>
+                                </div>
+                            </div>
+                            <div class="row no-gutters mt-2">
+                                <div
+                                    class="col-xl-9 col-sm-10 col-md-10 text-right"
+                                >
+                                    <department-button
+                                        (click)="addNewField('info_fields')"
+                                        type="submit"
+                                        text="Add new field"
+                                        color="green"
+                                        link
+                                    >
+                                    </department-button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="department__vendor-create__info row justify-content-center align-items-center pb-4"
+                >
+                    <div
+                        class="department__vendor-create__header col-xl-12 col-sm-12 col-xs-12 pb-4"
+                    >
+                        <h3 class="department__vendor-create__info-title">
+                            Department Contact Person
+                        </h3>
+                    </div>
+                    <div
+                        class="department__vendor-create__body col-12 col-xs-12 col-sm-12"
+                    >
+                        <div class="department__vendor-create__items">
+                            <div
+                                *ngFor="
+                                    let fields of Department.contact_person_fields
+                                        | keyvalue
+                                "
+                            >
+                                <div *ngFor="let field_item of fields.value">
+                                    <div>
+                                        <department-form-inp
+                                            formControlName="contact_person_fields"
+                                            [_value]="field_item.value"
+                                            (dispatchToProps)="
+                                                dispatchFieldsToProps(
+                                                    'contact_person_fields',
+                                                    fields.key,
+                                                    field_item
+                                                )
+                                            "
+                                            [c]="
+                                                currentDepartmentForm.controls
+                                                    .contact_person_fields
+                                            "
+                                            [optional]="true"
+                                            [id]="field_item.key"
+                                            [name]="field_item.name"
+                                            [pH]="field_item.key"
+                                        >
+                                        </department-form-inp>
+                                        <div
+                                            *ngIf="
+                                                fields.key ===
+                                                'additional_fields'
+                                            "
+                                            class="department__additional-field__eraser"
+                                        >
+                                            <span> </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row no-gutters mt-2">
+                                <div
+                                    class="col-xl-9 col-sm-10 col-md-10 text-right"
+                                >
+                                    <department-button
+                                        (click)="
+                                            addNewField('contact_person_fields')
+                                        "
+                                        type="submit"
+                                        text="Add new field"
+                                        color="green"
+                                        link
+                                    >
+                                    </department-button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="department__vendor-form__footer row justify-content-center align-items-center mt-4"
+                >
+                    <div class="col-xl-4 col-xs-12 col-md-4 col-sm-6 pb-2">
+                        <department-button
+                            [ngStyle]="{
+                                cursor: 'pointer'
+                            }"
+                            class="department__full-width text-center"
+                            text="Cancel"
+                            (click)="cancelDepartment($event)"
+                            color="gray"
+                            link
+                        >
+                        </department-button>
+                    </div>
+                    <div class="col-xl-8 col-xs-12 col-md-8 col-sm-6 pb-2">
+                        <department-button
+                            class="department__full-width"
+                            type="submit"
+                            text="Send"
+                            (click)="storeDepartment($event)"
+                            color="green"
+                        >
+                        </department-button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

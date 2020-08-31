@@ -56,7 +56,7 @@ export const departmentReducer = (
                 currentDepartment: {} as Department,
             };
         case EnumDepartmentActions.AddDepartmentSuccess:
-            return state;
+            return { ...state, departments: action.payload };
         case EnumDepartmentActions.DemolishDepartmentSuccess:
             return { ...state, departments: action.payload };
         default:
