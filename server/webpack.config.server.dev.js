@@ -13,40 +13,25 @@ const plugins = [
         filename: 'main.js.map',
         exclude: ['bundle.js'],
     }),
-    new webpack.HotModuleReplacementPlugin(),
-    new HtmlWebpackPlugin({
-        template: 'static/index.html',
-        filename: 'index.html',
-    }),
-    new CleanWebpackPlugin(),
     new CircularDependencyPlugin({
         exclude: /node_modules/,
         failOnError: false,
-    }),
-    new MiniCssExtractPlugin({
-        filename: '[name].css',
-        chunkFilename: '[id].css',
     }),
 ];
 
 module.exports = require('./webpack.config.js')({
     mode: 'development',
     entry: {
-        polyfills: ['./src/polyfills.ts'],
-        'vendor.style': ['./src/assets/styles/main.sass'],
-        server: ['./src/bootstrap.ts', 'webpack-hot-middleware/client'],
+        server: ['./src/boostrap.server.ts'],
     },
     output: {
-        filename: '[name].[hash:64].dev.js',
-        chunkFilename: '[name].[hash:64].dev.js',
+        filename: '[name].js',
+        chunkFilename: '[name].js',
     },
     plugins,
     target: 'node',
     devtool: 'eval-source-map',
     perfomance: {
         hints: false,
-    },
-    optimization: {
-        minimizer: [new OptimizeCSSAssetsPlugin({})],
     },
 });

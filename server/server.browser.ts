@@ -10,7 +10,7 @@ import * as path from 'path';
 
 import * as webpack from 'webpack';
 
-const staticHost = `http://localhost:3000/build/index.html` as string;
+const staticHost = `http://localhost:3000/build/index.html`;
 
 const webpackConfig = require('../webpack.dev.config.babel');
 
@@ -133,13 +133,12 @@ export class BootstrapServer {
      * @param {string} [pathTo]
      * @memberof BootstrapServer
      */
-    private staticInit<T>(pathTo?: string): void {
+    private staticInit(pathTo?: string): void {
         this.app.use('/', express.static(path.resolve(pathTo)));
     }
 
     private async fetchIndexFromHost(staticUrL: string): Promise<string> {
         const res = await axios.default.get(staticUrL);
-
         return res.data;
     }
 }

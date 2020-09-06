@@ -1,4 +1,8 @@
 import {
+    AddAdditionalFields,
+    DepartmentFieldsModel,
+} from './../../store/actions/department.action';
+import {
     Component,
     OnInit,
     OnDestroy,
@@ -10,7 +14,7 @@ import {
     ViewChild,
 } from '@angular/core';
 import { validateProperty } from '../forms/department-add-field.form.directive';
-import { Subscription, fromEvent, Observable } from 'rxjs';
+import { Subscription, Observable, of, iif, EMPTY, fromEvent } from 'rxjs';
 import {
     FormControl,
     FormGroup,
@@ -21,7 +25,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { AppState } from '../../store/state/app.state';
 import { DOCUMENT } from '@angular/common';
-import { map, pluck } from 'rxjs/operators';
+import { map, pluck, switchMap, throttleTime } from 'rxjs/operators';
 import {
     Department,
     ModalModel,
@@ -30,8 +34,6 @@ import {
 } from '../../core';
 import { GetModal } from '../../store/actions/utils.action';
 import {
-    SetDepartmentsFieldsModel,
-    DepartmentFieldsModel,
     DepartmentSubFieldsModel,
     SetDepartmentsInfoFields,
     SetDepartmentsContactPersonsFields,
@@ -44,6 +46,8 @@ import {
     selectVendorContactPersonsFields,
 } from '../../store/selectors/department.selector';
 import { FieldsPickModel } from '../../store/state/department.state';
+import { ɵKeyEventsPlugin } from '@angular/platform-browser';
+import { selectModals } from '../../store/selectors/utils.selector';
 @Component({
     selector: 'department-add-field-modal',
     templateUrl: './modal.add.field.component.html',
@@ -51,7 +55,29 @@ import { FieldsPickModel } from '../../store/state/department.state';
 })
 export class ModalAddFieldComponent
     implements OnInit, OnDestroy, AfterViewInit {
+    private sumbitSubscription!: Subscription;
+
     private fieldsControl: FormControl = new FormControl();
+
+    private currentModal: Observable<ModalModel> = this._store.pipe(
+        select(selectModals),
+    );
+    /**
+     * Current field is required to add new field
+     *
+     * @private
+     * @type {string}
+     * @memberof ModalAddFieldComponent
+     */
+    private currentField!: string;
+    /**
+     * Current id is allowing us to add new customized field accordingly to current choosen department
+     *
+     * @private
+     * @type {(string | number)}
+     * @memberof ModalAddFieldComponent
+     */
+    private currentId!: string | number;
 
     private readonly departmentsInfoFields$ = this._store.pipe(
         select(selectVendorInfoFields),
@@ -63,103 +89,80 @@ export class ModalAddFieldComponent
 
     private fieldsGroup: FormGroup;
 
-    public inputFields: Subscription;
-
     @Input() modalActivated!: ModalModel;
     @Input() modalContext!: Department;
 
-    @ViewChild(DepartmentFormComponent)
-    private readonly child!: DepartmentFormComponent;
+    @ViewChild('formModalAdd') protected readonly formModalAdd!: ElementRef;
 
     public constructor(
         private readonly _route: ActivatedRoute,
         private _fB: FormBuilder,
         private _store: Store<AppState>,
-        @Optional() @Inject(DOCUMENT) private readonly document: Document,
     ) {
         this.fieldsGroup = this._fB.group({
             fields: [
-                '',
-                validateProperty('super_key', [
+                {
+                    addField: [
+                        {
+                            key: 'addField',
+                            value: '',
+                            name: 'addField',
+                        } as DepartmentSetterModel,
+                    ],
+                },
+                validateProperty('addField|0|value', [
                     Validators.required,
                     Validators.minLength(4),
-                    Validators.pattern(/^[a-zA-Z]+$/i),
+                    Validators.pattern(/^[a-zA-Z]+$/),
                 ]),
             ],
         });
     }
 
     public ngAfterViewInit() {
-        this.inputFields = fromEvent<KeyboardEvent>(this.document, 'keyup')
-            .pipe(pluck<KeyboardEvent, string>('key'))
-            .subscribe((data: string) => {});
-    }
+        this.sumbitSubscription = fromEvent<KeyboardEvent | MouseEvent>(
+            this.formModalAdd.nativeElement,
+            'submit',
+        )
+            .pipe()
+            .subscribe((e: MouseEvent | KeyboardEvent) => {
+                e.preventDefault();
+                e.stopImmediatePropagation();
 
-    public storeNewField(e: KeyboardEvent | MouseEvent): void {
-        e.preventDefault();
-        e.stopImmediatePropagation();
-        if (this.fieldsGroup.valid) {
-            const mutatedFields: SetDepartmentsFieldsModel = {
-                fields: this.modalActivated.type as DepartmentFieldsModel,
-                sub_fields: 'additional_fields' as DepartmentSubFieldsModel,
-                regenerator: {
-                    key: this.fieldsGroup.value.fields.super_key,
-                    value: '',
-                    name: camelCase(this.fieldsGroup.value.fields.super_key),
-                },
-            };
+                if (
+                    this.fieldsGroup.valid &&
+                    (!this.fieldsGroup.touched || !this.fieldsGroup.dirty)
+                ) {
+                    this.currentModal
+                        .pipe(
+                            throttleTime(1000),
+                            switchMap((data: ModalModel) =>
+                                iif(() => !data.type, EMPTY, of(data)),
+                            ),
+                        )
+                        .subscribe((data: ModalModel) => {
+                            this.currentField = data.type;
+                            this.currentId = data.id;
+                        });
 
-            // this.departmentsInfoFields$.subscribe(
-            //     (
-            //         data: DepartmentFields<
-            //             DepartmentSetterModel,
-            //             DepartmentSetterModel
-            //         >,
-            //     ) => {
-            //         const {
-            //             essential_fields,
-            //             additional_fields,
-            //         }: DepartmentFields<
-            //             DepartmentSetterModel,
-            //             DepartmentSetterModel
-            //         > = fields;
-
-            //         const mutatedFields: DepartmentFields<
-            //             DepartmentSetterModel,
-            //             DepartmentSetterModel
-            //         > = {
-            //             essential_fields,
-            //             additional_fields,
-            //         };
-
-            //         const mergedMutatedFields: DepartmentSetterModel[] = essential_fields.concat(
-            //             additional_fields,
-            //         );
-            //     },
-            // );
-
-            switch (this.modalActivated.type) {
-                case 'info_fields':
                     this._store.dispatch(
-                        new SetDepartmentsInfoFields(mutatedFields),
+                        new AddAdditionalFields({
+                            id: this.currentId || null,
+                            fields: this.currentField as DepartmentFieldsModel,
+                            mutated_fields: {
+                                key: this.fieldsGroup.value.fields.addField[0]
+                                    .value,
+                                value: '',
+                                name: camelCase(
+                                    this.fieldsGroup.value.fields.addField[0]
+                                        .value,
+                                ),
+                            },
+                        }),
                     );
-
-                    break;
-                case 'contact_person_fields':
-                    this._store.dispatch(
-                        new SetDepartmentsContactPersonsFields(mutatedFields),
-                    );
-                    break;
-            }
-
-            this._store.dispatch(
-                new GetModal({
-                    activated: !this.modalActivated.activated,
-                    type: null,
-                    id: 0,
-                }),
-            );
-        }
+                    this.cancelModalState();
+                }
+            });
     }
 
     public cancelModalState<T extends ModalModel>() {
@@ -168,16 +171,17 @@ export class ModalAddFieldComponent
                 new GetModal({
                     activated: !this.modalActivated.activated,
                     type: null,
-                    id: 0,
+                    id: null,
                 }),
             );
         }
     }
 
     public ngOnInit() {}
+
     public ngOnDestroy() {
-        if (this.inputFields) {
-            this.inputFields.unsubscribe();
+        if (this.sumbitSubscription) {
+            this.sumbitSubscription.unsubscribe();
         }
     }
 }

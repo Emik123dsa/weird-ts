@@ -10,9 +10,7 @@ const routes: Routes = [
     {
         path: '',
         component: DepartmentComponent,
-        resolve: {
-            
-        }, 
+
         children: [
             {
                 path: 'create',

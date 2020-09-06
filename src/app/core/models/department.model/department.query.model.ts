@@ -1,3 +1,3 @@
 export interface DepartmentQueryModel {
-  query?: string;
+    query?: string;
 }

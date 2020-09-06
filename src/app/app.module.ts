@@ -20,6 +20,7 @@ import { DepartmentEffect } from './store/effects/department.effect';
 import { ConfigEffect } from './store/effects/config.effect';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
 import { UtilEffects } from './store/effects/utils.effect';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
     imports: [
@@ -44,6 +45,7 @@ import { UtilEffects } from './store/effects/utils.effect';
         DepartmentModule,
         AppRoutingModule,
         HttpClientModule,
+        BrowserAnimationsModule,
     ],
     declarations: [AppComponent, FooterComponent, HeaderComponent],
     bootstrap: [AppComponent],

@@ -23,18 +23,18 @@ const plugins = [
         path.join(__dirname, 'src'),
         {},
     ),
-    new CopyWebpackPlugin({
-        patterns: [{ from: 'src/assets/img', to: 'img' }],
-    }),
-    new webpack.ProvidePlugin({
-        fetch: 'exports-loader?self.fetch!whatwg-fetch',
-    }),
-    new webpack.DefinePlugin({
-        'process.env': {
-            NODE_ENV: JSON.stringify(process.env.NODE_ENV),
-        },
-    }),
-    new webpack.NamedModulesPlugin(),
+    // new CopyWebpackPlugin({
+    //     patterns: [{ from: 'src/assets/img', to: 'img' }],
+    // }),
+    // new webpack.ProvidePlugin({
+    //     fetch: 'exports-loader?self.fetch!whatwg-fetch',
+    // }),
+    // new webpack.DefinePlugin({
+    //     'process.env': {
+    //         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+    //     },
+    // }),
+    // new webpack.NamedModulesPlugin(),
 ];
 
 module.exports = (options) => ({
@@ -42,7 +42,7 @@ module.exports = (options) => ({
     entry: options.entry,
     output: Object.assign(
         {
-            path: path.resolve(process.cwd(), 'build'),
+            path: path.resolve(process.cwd(), 'build/server'),
             publicPath: '/',
         },
         options.output,

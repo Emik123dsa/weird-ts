@@ -2,6 +2,13 @@
 # yarn lockfile v1
 
 
+"@angular/animations@^10.0.14":
+  version "10.0.14"
+  resolved "https://registry.yarnpkg.com/@angular/animations/-/animations-10.0.14.tgz#8e7fa9b26c70cf8e67ec0cc943211eb3957dda8c"
+  integrity sha512-0BOGQOuaudIG0pq6FAnG55teKM7tEQZdIwdoOf0okhh9n0cFWSWRUjvUxWt25bWswlO+HxELyJioiRUvVSES4g==
+  dependencies:
+    tslib "^2.0.0"
+
 "@angular/common@^10.0.8":
   version "10.0.9"
   resolved "https://registry.yarnpkg.com/@angular/common/-/common-10.0.9.tgz#47a7eaad30c5f7fd49f2ef927a6fbfd0bd0dcf9c"
@@ -30,13 +37,6 @@
   version "10.0.9"
   resolved "https://registry.yarnpkg.com/@angular/core/-/core-10.0.9.tgz#4e03ae6f1eaf6191783176c4d24af183a20f572d"
   integrity sha512-sRod8RnARYmMy/uBmZyLxt5F3vYIvAkTEv48DFvCKJ6FN7zJPS7C7/dnnDv0JG7hNsX3jVXCsIRWJiCk0ycDGg==
-  dependencies:
-    tslib "^2.0.0"
-
-"@angular/flex-layout@^10.0.0-beta.32":
-  version "10.0.0-beta.32"
-  resolved "https://registry.yarnpkg.com/@angular/flex-layout/-/flex-layout-10.0.0-beta.32.tgz#a797ebd6f3689c71a63e99aa62f2b9cb933f5e2d"
-  integrity sha512-JvuY4dUoy5jyCTIrFiq7n30Znakh1pD3nbg0h0hs2r3t1OiDQb0ZSI1wcumosG/vYHsuJQTuNhbfaIZzA1x8nA==
   dependencies:
     tslib "^2.0.0"
 
@@ -1508,10 +1508,15 @@
     "@types/node" "*"
     form-data "^3.0.0"
 
-"@types/node@*", "@types/node@^14.0.18", "@types/node@^14.0.27":
+"@types/node@*", "@types/node@^14.0.18":
   version "14.0.27"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.0.27.tgz#a151873af5a5e851b51b3b065c9e63390a9e0eb1"
   integrity sha512-kVrqXhbclHNHGu9ztnAwSncIgJv/FaxmzXJvGXNdcCpV1b8u1/Mi6z6m0vwy0LzKeXFTPLH0NzwmoJ3fNCIq0g==
+
+"@types/node@^14.6.2":
+  version "14.6.2"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.6.2.tgz#264b44c5a28dfa80198fc2f7b6d3c8a054b9491f"
+  integrity sha512-onlIwbaeqvZyniGPfdw/TEhKIh79pz66L1q06WUQqJLnAb6wbjvOtepLYTGHTqzdXgBYIE3ZdmqHDGsRsbBz7A==
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.0"

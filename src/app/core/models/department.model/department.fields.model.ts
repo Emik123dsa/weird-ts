@@ -5,9 +5,9 @@
  * @interface DepartmentSetterModel
  */
 export interface DepartmentSetterModel {
-  key: string;
-  value: string;
-  name?: string;
+    key: string;
+    value?: string;
+    name?: string;
 }
 /**
  * DepartmentFields sagas
@@ -18,6 +18,6 @@ export interface DepartmentSetterModel {
  * @template K
  */
 export interface DepartmentFields<T, K> {
-  essential_fields: T[];
-  additional_fields: K[];
+    essential_fields?: T[];
+    additional_fields?: K[];
 }

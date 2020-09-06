@@ -1,29 +1,26 @@
-import {
-  Routes,
-  RouterModule,
-  PreloadAllModules,
-} from "@angular/router";
-import { NgModule } from "@angular/core";
-
-// import { McBreadcrumbsModule } from 'ngx-breadcrumbs';
-
+import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
+import { NgModule } from '@angular/core';
 const routes: Routes = [
-  {
-    path: "",
-    loadChildren: () => import("./index/index.module").then(m => m.IndexModule),
-  }, {
-    path: "departments", 
-    loadChildren: () => import("./department/department.module").then(m => m.DepartmentModule),
-  }
+    {
+        path: '',
+        loadChildren: () =>
+            import('./index/index.module').then((m) => m.IndexModule),
+    },
+    {
+        path: 'departments',
+        loadChildren: () =>
+            import('./department/department.module').then(
+                (m) => m.DepartmentModule,
+            ),
+    },
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forRoot(routes, {
-      preloadingStrategy: PreloadAllModules,
-    }),
-    // McBreadcrumbsModule.forRoot()
-  ],
-  exports: [RouterModule],
+    imports: [
+        RouterModule.forRoot(routes, {
+            preloadingStrategy: PreloadAllModules,
+        }),
+    ],
+    exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

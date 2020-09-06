@@ -1,5 +1,13 @@
-import { SetDepartmentsInfoFields } from './../../store/actions/department.action';
-import { DepartmentSetterModel } from './../../core/models/department.model/department.fields.model';
+import { Department } from './../../core/models/department.model/department.model';
+import {
+    SetDepartmentsInfoFields,
+    DepartmentSubFieldsModel,
+    DepartmentFieldsModel,
+} from './../../store/actions/department.action';
+import {
+    DepartmentFields,
+    DepartmentSetterModel,
+} from './../../core/models/department.model/department.fields.model';
 import {
     Component,
     Input,
@@ -17,6 +25,7 @@ import {
     ElementRef,
     Attribute,
     Optional,
+    Renderer2,
 } from '@angular/core';
 
 import {
@@ -24,15 +33,20 @@ import {
     ControlValueAccessor,
     FormControl,
 } from '@angular/forms';
-import { Subscribable } from 'rxjs';
+import { Subscribable, Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../store/state/app.state';
+import { shareReplay, startWith } from 'rxjs/operators';
 export const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
     provide: NG_VALUE_ACCESSOR,
     useExisting: forwardRef(() => DepartmentFormComponent),
     multi: true,
 };
 
+export interface DepartmentForm {
+    key: string;
+    value: DepartmentSetterModel[];
+}
 @Component({
     selector: 'department-form-inp',
     templateUrl: './department.form.component.html',
@@ -42,70 +56,90 @@ export const CUSTOM_INPUT_CONTROL_VALUE_ACCESSOR: any = {
 })
 export class DepartmentFormComponent
     implements ControlValueAccessor, AfterViewInit, OnChanges {
-    @Input() type = 'text';
+    @Input() protected readonly deleteOnAdditional!: boolean;
+    @Input() private seq!: number;
 
-    @Input() id = '';
+    @Input() private type!: string;
 
-    @Input() name = '';
+    @Input() private id!: string;
 
-    @Input() _value = '';
+    @Input() private name!: string;
 
-    @Input() c: FormControl = new FormControl();
+    @Input() private text!: string;
 
-    @Input() optional = false;
+    @Input() private c: FormControl = new FormControl();
+
+    @Input() private optional!: boolean;
 
     public errors: Array<any> = [];
 
     private innerValue: DepartmentSetterModel = {} as DepartmentSetterModel;
 
-    @ViewChild('input') inputRef: ElementRef;
+    @ViewChild('input') inputRef!: ElementRef;
 
-    @ViewChild('label') labelRef: ElementRef;
+    @ViewChild('label') labelRef!: ElementRef;
 
     @Output() dispatchToProps: EventEmitter<any> = new EventEmitter();
+    @Output() removeFromProps: EventEmitter<
+        DepartmentSetterModel
+    > = new EventEmitter();
 
-    @Input() pH: string;
+    @Input() pH!: string;
+
+    @Input() protected readonly fields!: DepartmentFieldsModel;
 
     public constructor(
         @Attribute('customClass') private customClass: string,
-        private element: ElementRef,
+        private renderer2: Renderer2,
     ) {}
 
-    public ngOnChanges() {}
-
-    public dispatchToStoreByProps(value: DepartmentSetterModel): void {
-        this.dispatchToProps.emit(null);
-    }
+    public ngOnChanges(): void {}
 
     public ngAfterViewInit() {
-        this.c.valueChanges.subscribe(() => {
-            if (
-                this.c.value === {} ||
-                this.c.value == null ||
-                this.c.value === undefined
-            ) {
-                this.innerValue = {} as DepartmentSetterModel;
-
-                this.inputRef.nativeElement.value = '';
-            }
-        });
+        if (this.dispatchToProps) {
+            this.renderer2.listen(
+                this.inputRef.nativeElement,
+                'change',
+                (): void => {
+                    this.dispatchToProps.emit(null);
+                },
+            );
+        }
     }
 
-    onChange(e: string, value: DepartmentSetterModel): void {
-        this.innerValue = { ...this.c.value, [value.key]: value.value };
+    onChange<T extends DepartmentSetterModel>({ key, name, value }: T): void {
+        let mutatedValue!: DepartmentSetterModel;
+        if (this.c.value[name].hasOwnProperty(key)) {
+            mutatedValue = Reflect.ownKeys(
+                this.c.value[name][key] as DepartmentSetterModel,
+            ).reduce((acc: any, data: keyof T) => {
+                acc = {
+                    ...acc,
+                    [data]:
+                        data === 'value'
+                            ? value
+                            : this.c.value[name][key][data],
+                };
+                return acc;
+            }, {});
+        }
+
+        const mappedState: DepartmentSetterModel[] = this.c.value[name].map(
+            (data: DepartmentSetterModel, index: string | number | symbol) => {
+                return index === key ? mutatedValue : data;
+            },
+        );
+
+        this.writeValue({ key: name, value: mappedState });
 
         this.propagateChange(this.innerValue);
 
-        if (this.dispatchToProps) {
-            if (e === 'change') {
-                this.dispatchToStoreByProps(value);
-            }
-        }
-
         this.errors = [];
 
-        for (const key in this.c.errors) {
-            this.errors.push(this.c.errors[key]);
+        for (const keys in this.c.errors) {
+            if (this.c.errors.hasOwnProperty(keys)) {
+                this.errors.push(this.c.errors[keys]);
+            }
         }
     }
 
@@ -121,8 +155,11 @@ export class DepartmentFormComponent
 
     propagateChange = (_: DepartmentSetterModel) => {};
 
-    writeValue(value: DepartmentSetterModel) {
-        this.innerValue = value;
+    writeValue({ key, value }: DepartmentForm) {
+        this.innerValue = {
+            ...this.c.value,
+            [key]: value,
+        };
     }
 
     registerOnChange(fn: () => void): void {
@@ -130,4 +167,17 @@ export class DepartmentFormComponent
     }
 
     registerOnTouched(fn: DepartmentSetterModel) {}
+
+    protected removeAdditionalField<T extends DepartmentSetterModel>({
+        key,
+        name,
+        value,
+    }: T): void {
+        if (this.removeFromProps) {
+            this.removeFromProps.emit({
+                key: this.fields,
+                name,
+            });
+        }
+    }
 }

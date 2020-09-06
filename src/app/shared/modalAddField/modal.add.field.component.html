@@ -17,65 +17,69 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="department__modal-body">
+                            <div class="department__modal-add__field">
                                 <form
-                                    (ngSubmit)="storeNewField($event)"
+                                    #formModalAdd
                                     [formGroup]="fieldsGroup"
                                     class="row no-gutters justify-content-center mb-3"
                                 >
-                                    <div class="col-8">
+                                    <div class="col-8 department__modal-body">
                                         <department-form-inp
                                             formControlName="fields"
+                                            [seq]="0"
                                             customClass="col-12"
+                                            text=""
                                             [c]="fieldsGroup.controls.fields"
-                                            name="super_key"
+                                            name="addField"
                                             [optional]="true"
                                             pH="Type name of the field ..."
-                                            idd="key"
+                                            idd="addField"
                                         >
                                         </department-form-inp>
                                     </div>
-                                </form>
-                            </div>
-                            <div class="department__modal-footer">
-                                <div class="department__modal-cancel">
                                     <div
-                                        [ngStyle]="{
-                                            marginTop:
-                                                fieldsGroup.invalid &&
-                                                (fieldsGroup.dirty ||
-                                                    fieldsGroup.touched)
-                                                    ? '28px'
-                                                    : '0px'
-                                        }"
-                                        class="row no-gutters"
+                                        class="col-12 department__modal-footer"
                                     >
-                                        <div class="col-6 text-center">
-                                            <department-button
-                                                type="submit"
-                                                class="department__btn-middle department__full-width department_btn-cancel"
-                                                text="Cancel"
-                                                (click)="
-                                                    cancelModalState($event)
-                                                "
-                                                color="gray"
-                                                link
+                                        <div class="department__modal-cancel">
+                                            <div
+                                                [ngStyle]="{
+                                                    marginTop:
+                                                        fieldsGroup.invalid &&
+                                                        (fieldsGroup.dirty ||
+                                                            fieldsGroup.touched)
+                                                            ? '28px'
+                                                            : '0px'
+                                                }"
+                                                class="row no-gutters"
                                             >
-                                            </department-button>
-                                        </div>
-                                        <div class="col-6 text-center">
-                                            <department-button
-                                                (click)="storeNewField($event)"
-                                                type="submit"
-                                                class="department__btn-middle department__full-width department_btn-accept"
-                                                text="Accept"
-                                                color="green"
-                                                link
-                                            >
-                                            </department-button>
+                                                <div class="col-6 text-center">
+                                                    <department-button
+                                                        type="submit"
+                                                        class="department__btn-middle department__full-width department_btn-cancel"
+                                                        text="Cancel"
+                                                        (click)="
+                                                            cancelModalState(
+                                                                $event
+                                                            )
+                                                        "
+                                                        color="gray"
+                                                        link
+                                                    >
+                                                    </department-button>
+                                                </div>
+                                                <div class="col-6 text-center">
+                                                    <department-button
+                                                        class="department__btn-middle department__full-width department_btn-accept"
+                                                        text="Accept"
+                                                        color="green"
+                                                        type="submit"
+                                                    >
+                                                    </department-button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
                     </div>

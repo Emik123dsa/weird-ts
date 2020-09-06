@@ -8,12 +8,15 @@ export type TypeModal =
     | 'delete'
     | 'change'
     | 'info_fields'
-    | 'contact_person_fields';
+    | 'contact_person_fields'
+    | 'delete|info_fields'
+    | 'delete|contact_person_fields';
 
 export interface ModalModel {
     activated: boolean;
     type: TypeModal;
     id: number;
+    bind?: string;
 }
 
 export interface UtilsModel {

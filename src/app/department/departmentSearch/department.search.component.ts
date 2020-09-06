@@ -1,3 +1,4 @@
+import { DepartmentSetterModel } from './../../core/models/department.model/department.fields.model';
 import { Store } from '@ngrx/store';
 import {
     AfterViewInit,
@@ -45,8 +46,16 @@ export class DepartmentSearch implements OnDestroy, AfterViewInit {
         private _store: Store<AppState>,
     ) {
         this.departmentForm = this.fb.group({
-            query: '',
-        } as DepartmentQueryModel);
+            query: {
+                superQuery: [
+                    {
+                        key: 'query',
+                        value: '',
+                        name: 'query',
+                    } as DepartmentSetterModel,
+                ],
+            },
+        });
     }
 
     @ViewChild(DepartmentFormComponent)
@@ -60,7 +69,7 @@ export class DepartmentSearch implements OnDestroy, AfterViewInit {
             .pipe(distinctUntilChanged(), debounceTime(500))
             .subscribe((e: KeyboardEvent) => {
                 this.departmentService
-                    .query(this.departmentForm.value)
+                    .query(this.departmentForm.value.query.superQuery[0])
                     .subscribe((data) => {
                         console.log(data);
                     });

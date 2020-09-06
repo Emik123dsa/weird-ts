@@ -37,7 +37,7 @@ module.exports = (options) => ({
     entry: options.entry,
     output: Object.assign(
         {
-            path: path.resolve(process.cwd(), 'build'),
+            path: path.resolve(process.cwd(), 'build/browser'),
             publicPath: '/',
         },
         options.output,
@@ -51,7 +51,7 @@ module.exports = (options) => ({
                     {
                         loader: 'awesome-typescript-loader',
                         options: {
-                            configFileName: path.resolve('tsconfig.json'),
+                            configFileName: path.resolve('tsconfig.app.json'),
                         },
                     },
                     'angular2-template-loader',

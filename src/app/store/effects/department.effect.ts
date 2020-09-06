@@ -1,16 +1,13 @@
+import { selectDepartments } from './../selectors/department.selector';
 import {
     DepartmentFields,
     DepartmentSetterModel,
 } from './../../core/models/department.model/department.fields.model';
 
 import {
-    SetDepartmentContactPersonsFields,
-    SetDepartmentContactPersonsFieldsSuccess,
-    SetDepartmentInfoFields,
     SetDepartmentsContactPersonsFields,
     SetDepartmentsInfoFields,
     SetDepartmentsContactPersonsFieldsSuccess,
-    SetDepartmentInfoFieldsSuccess,
     SetDepartmentsInfoFieldsSuccess,
     SetCurrentDepartment,
     SetCurrentDepartmentSuccess,
@@ -20,6 +17,14 @@ import {
     DemolishDepartmentSuccess,
     AddDepartment,
     AddDepartmentSuccess,
+    AlterCurrentDepartment,
+    AlterCurrentDepartmentSuccess,
+    SetDepartmentsFieldsModel,
+    AddAdditionalFields,
+    AddAdditionalFieldsSuccess,
+    DepartmentFieldsModel,
+    DemolishAdditionalFields,
+    DemolishAdditionalFieldsSuccess,
 } from './../actions/department.action';
 
 import { Effect, ofType, Actions } from '@ngrx/effects';
@@ -81,32 +86,6 @@ export class DepartmentEffect {
     );
 
     @Effect()
-    setDepartmentContactPersonsFields$ = this._actions$.pipe(
-        ofType<SetDepartmentContactPersonsFields>(
-            EnumDepartmentActions.SetDepartmentContactPersonsFields,
-        ),
-        map((action) => action.payload),
-        withLatestFrom(
-            this._store.pipe(select(selectVendorContactPersonsFields)),
-        ),
-        switchMap(([id, vendor]) => {
-            console.log(id);
-
-            return of(
-                new SetDepartmentContactPersonsFieldsSuccess({
-                    id: 123,
-                    fields: 'contact_person_fields',
-                    sub_fields: 'essential_fields',
-                    regenerator: {
-                        key: '123',
-                        value: '123',
-                    },
-                }),
-            );
-        }),
-    );
-
-    @Effect()
     setDepartmentsContactPersonsFields$ = this._actions$.pipe(
         ofType<SetDepartmentsContactPersonsFields>(
             EnumDepartmentActions.SetDepartmentsContactPersonsFields,
@@ -117,81 +96,39 @@ export class DepartmentEffect {
             this._store.pipe(select(selectVendorContactPersonsFields)),
         ),
         switchMap(([field, fields]) => {
-            const {
-                essential_fields,
-                additional_fields,
-            }: DepartmentFields<
-                DepartmentSetterModel,
-                DepartmentSetterModel
-            > = fields;
+            let currentField!: DepartmentSetterModel[];
 
-            const mutatedFields: DepartmentFields<
+            const immutableField: string | number | symbol = Reflect.ownKeys(
+                fields,
+            ).find(
+                (
+                    data: keyof DepartmentFields<
+                        DepartmentSetterModel,
+                        DepartmentSetterModel
+                    >,
+                ) => data !== field.sub_fields && data,
+            );
+
+            currentField = fields[field.sub_fields].map(
+                (item: DepartmentSetterModel) => {
+                    if (item.name === field.mutated_fields.name) {
+                        return field.mutated_fields;
+                    } else {
+                        return item;
+                    }
+                },
+            );
+
+            const personsFields: DepartmentFields<
                 DepartmentSetterModel,
                 DepartmentSetterModel
             > = {
-                essential_fields,
-                additional_fields,
+                [immutableField]: fields[immutableField],
+                [field.sub_fields]: currentField,
             };
 
-            const mergedMutatedFields: DepartmentSetterModel[] = essential_fields.concat(
-                additional_fields,
-            );
-
-            if (
-                mergedMutatedFields.some(
-                    (item: DepartmentSetterModel): boolean =>
-                        item.name === field.regenerator.name,
-                )
-            ) {
-                mutatedFields[field.sub_fields] = fields[field.sub_fields].map(
-                    (item: DepartmentSetterModel): DepartmentSetterModel => {
-                        if (item.name === field.regenerator.name) {
-                            return field.regenerator;
-                        } else {
-                            return item;
-                        }
-                    },
-                );
-            } else {
-                if (
-                    !mergedMutatedFields.find(
-                        (data: DepartmentSetterModel) =>
-                            data.name === field.regenerator.name,
-                    )
-                ) {
-                    mutatedFields[field.sub_fields] = fields[
-                        field.sub_fields
-                    ].concat(field.regenerator);
-                }
-            }
             return of(
-                new SetDepartmentsContactPersonsFieldsSuccess({
-                    contact_person_fields: mutatedFields,
-                }),
-            );
-        }),
-    );
-
-    @Effect()
-    setDepartmentInfoFields$ = this._actions$.pipe(
-        ofType<SetDepartmentInfoFields>(
-            EnumDepartmentActions.SetDepartmentInfoFields,
-        ),
-        map((action) => action.payload),
-        withLatestFrom(this._store.pipe(select(selectVendorInfoFields))),
-        switchMap(([id, vendor]) => {
-            console.log(id);
-
-            return of(
-                new SetDepartmentInfoFieldsSuccess({
-                    id: 123,
-                    sub_fields: 'essential_fields',
-                    fields: 'info_fields',
-                    regenerator: {
-                        key: '123',
-                        value: '123',
-                    },
-                }),
+                new SetDepartmentsContactPersonsFieldsSuccess(personsFields),
             );
         }),
     );
@@ -205,58 +142,38 @@ export class DepartmentEffect {
         map((action) => action.payload),
         withLatestFrom(this._store.pipe(select(selectVendorInfoFields))),
         switchMap(([field, fields]) => {
-            const {
-                essential_fields,
-                additional_fields,
-            }: DepartmentFields<
-                DepartmentSetterModel,
-                DepartmentSetterModel
-            > = fields;
+            let currentField!: DepartmentSetterModel[];
 
-            const mutatedFields: DepartmentFields<
+            const immutableField: string | number | symbol = Reflect.ownKeys(
+                fields,
+            ).find(
+                (
+                    data: keyof DepartmentFields<
+                        DepartmentSetterModel,
+                        DepartmentSetterModel
+                    >,
+                ) => data !== field.sub_fields && data,
+            );
+
+            currentField = fields[field.sub_fields].map(
+                (item: DepartmentSetterModel) => {
+                    if (item.name === field.mutated_fields.name) {
+                        return field.mutated_fields;
+                    } else {
+                        return item;
+                    }
+                },
+            );
+
+            const infoFields: DepartmentFields<
                 DepartmentSetterModel,
                 DepartmentSetterModel
             > = {
-                essential_fields,
-                additional_fields,
+                [immutableField]: fields[immutableField],
+                [field.sub_fields]: currentField,
             };
 
-            const mergedMutatedFields: DepartmentSetterModel[] = essential_fields.concat(
-                additional_fields,
-            );
-            if (
-                mergedMutatedFields.some(
-                    (item: DepartmentSetterModel): boolean =>
-                        item.name === field.regenerator.name,
-                )
-            ) {
-                mutatedFields[field.sub_fields] = fields[field.sub_fields].map(
-                    (item: DepartmentSetterModel): DepartmentSetterModel => {
-                        if (item.name === field.regenerator.name) {
-                            return field.regenerator;
-                        } else {
-                            return item;
-                        }
-                    },
-                );
-            } else {
-                if (
-                    !mergedMutatedFields.find(
-                        (data: DepartmentSetterModel) =>
-                            data.name === field.regenerator.name,
-                    )
-                ) {
-                    mutatedFields[field.sub_fields] = fields[
-                        field.sub_fields
-                    ].concat(field.regenerator);
-                }
-            }
-
-            return of(
-                new SetDepartmentsInfoFieldsSuccess({
-                    info_fields: mutatedFields,
-                }),
-            );
+            return of(new SetDepartmentsInfoFieldsSuccess(infoFields));
         }),
     );
 
@@ -324,6 +241,252 @@ export class DepartmentEffect {
                 }
 
                 return of(new AddDepartmentSuccess(departmentsList));
+            },
+        ),
+    );
+
+    @Effect()
+    alterCurrentDepartment$ = this._actions$.pipe(
+        ofType<AlterCurrentDepartment>(
+            EnumDepartmentActions.AlterCurrentDepartment,
+        ),
+        map((data) => data.payload),
+        withLatestFrom(this._store.pipe(select(selectDepartmentsList))),
+        switchMap(
+            ([department, departments]): Observable<
+                AlterCurrentDepartmentSuccess
+            > => {
+                const mutatedDepartments: Department[] = departments.map(
+                    (field: Department) => {
+                        if (department.id === field.id) {
+                            return department;
+                        } else {
+                            return field;
+                        }
+                    },
+                );
+                return of(
+                    new AlterCurrentDepartmentSuccess(mutatedDepartments),
+                );
+            },
+        ),
+    );
+
+    @Effect()
+    addAdditionalFields$ = this._actions$.pipe(
+        ofType<AddAdditionalFields>(EnumDepartmentActions.AddAdditionalFields),
+        map((action) => action.payload),
+        withLatestFrom(this._store.pipe(select(selectDepartments))),
+        switchMap(
+            ([field, fields]): Observable<AddAdditionalFieldsSuccess> => {
+                const departments: Department[] = [] as Department[];
+
+                let vendorDepartmentFields: DepartmentFields<
+                    DepartmentSetterModel,
+                    DepartmentSetterModel
+                > =
+                    fields.vendorFields[
+                        field.fields as keyof DepartmentFieldsModel
+                    ];
+                const departmentFields: DepartmentSetterModel[] = vendorDepartmentFields.additional_fields.concat(
+                    vendorDepartmentFields.essential_fields,
+                );
+
+                if (
+                    !departmentFields.some(
+                        (item: DepartmentSetterModel) =>
+                            item.name === field.mutated_fields.name,
+                    )
+                ) {
+                    vendorDepartmentFields = {
+                        essential_fields:
+                            vendorDepartmentFields.essential_fields,
+                        additional_fields: vendorDepartmentFields.additional_fields.concat(
+                            field.mutated_fields,
+                        ),
+                    };
+                }
+
+                if (
+                    Array.isArray(fields.departments) &&
+                    fields.departments.length > 0
+                ) {
+                    if (!field.id) {
+                        fields.departments.reduce(
+                            (
+                                acc: Department | undefined,
+                                data: Department,
+                                index: string | symbol | number,
+                            ) => {
+                                Reflect.ownKeys(data).forEach(
+                                    (sub_data: keyof Department) => {
+                                        if (
+                                            sub_data &&
+                                            sub_data === field.fields
+                                        ) {
+                                            acc = {
+                                                ...acc,
+                                                [sub_data]: {
+                                                    essential_fields:
+                                                        data[sub_data]
+                                                            .essential_fields,
+                                                    additional_fields: data[
+                                                        sub_data
+                                                    ].additional_fields.concat(
+                                                        field.mutated_fields,
+                                                    ),
+                                                } as DepartmentFields<
+                                                    DepartmentSetterModel,
+                                                    DepartmentSetterModel
+                                                >,
+                                            };
+                                        } else {
+                                            acc = {
+                                                ...acc,
+                                                [sub_data]: data[sub_data],
+                                            };
+                                        }
+                                    },
+                                );
+                                departments[index] = acc;
+                                return acc;
+                            },
+                            {} as Department,
+                        );
+                    } else {
+                        if (
+                            fields.departments.some(
+                                (item: Department) => item.id === field.id,
+                            )
+                        ) {
+                            fields.departments.forEach(
+                                (
+                                    item: Department,
+                                    index: string | number | symbol,
+                                ) => {
+                                    if (item.id === field.id) {
+                                        departments[index] = {
+                                            ...item,
+                                            [field.fields as keyof DepartmentFieldsModel]: {
+                                                essential_fields:
+                                                    item[
+                                                        field.fields as keyof DepartmentFieldsModel
+                                                    ].essential_fields,
+                                                additional_fields: item[
+                                                    field.fields as keyof DepartmentFieldsModel
+                                                ].additional_fields.concat(
+                                                    field.mutated_fields,
+                                                ),
+                                            },
+                                        };
+                                    } else {
+                                        departments[index] = item;
+                                    }
+                                },
+                            );
+                        }
+                    }
+                }
+                return of(
+                    new AddAdditionalFieldsSuccess({
+                        departments,
+                        vendorFields: !field.id
+                            ? {
+                                  ...fields.vendorFields,
+                                  [field.fields as keyof DepartmentFieldsModel]: vendorDepartmentFields,
+                              }
+                            : fields.vendorFields,
+                    }),
+                );
+            },
+        ),
+    );
+
+    @Effect()
+    demolishAdditionalFields$ = this._actions$.pipe(
+        ofType<DemolishAdditionalFields>(
+            EnumDepartmentActions.DemolishAdditionalFields,
+        ),
+        map((data) => data.payload),
+        withLatestFrom(this._store.pipe(select(selectDepartments))),
+        switchMap(
+            ([department, departments]): Observable<
+                DemolishAdditionalFieldsSuccess
+            > => {
+                const additionalDepartments: Department[] = [] as Department[];
+
+                let vendorAdditionalFields: DepartmentFields<
+                    DepartmentSetterModel,
+                    DepartmentSetterModel
+                > =
+                    departments.vendorFields[
+                        department.fields as keyof DepartmentFieldsModel
+                    ];
+
+                if (
+                    vendorAdditionalFields.additional_fields.some(
+                        (data: DepartmentSetterModel) =>
+                            data.name === department.mutated_fields.key,
+                    )
+                ) {
+                    vendorAdditionalFields = {
+                        essential_fields:
+                            vendorAdditionalFields.essential_fields,
+                        additional_fields: vendorAdditionalFields.additional_fields.filter(
+                            (data: DepartmentSetterModel) =>
+                                data.name !== department.mutated_fields.key,
+                        ),
+                    };
+                }
+
+                if (!!department.id) {
+                    if (
+                        departments.departments.some(
+                            (item: Department) => item.id === department.id,
+                        )
+                    ) {
+                        departments.departments.forEach(
+                            (
+                                item: Department,
+                                index: string | number | symbol,
+                            ) => {
+                                if (item.id === department.id) {
+                                    additionalDepartments[index] = {
+                                        ...item,
+                                        [department.fields as keyof DepartmentFieldsModel]: {
+                                            essential_fields:
+                                                item[
+                                                    department.fields as keyof DepartmentFieldsModel
+                                                ].essential_fields,
+                                            additional_fields: item[
+                                                department.fields as keyof DepartmentFieldsModel
+                                            ].additional_fields.filter(
+                                                (data: DepartmentSetterModel) =>
+                                                    data.name !==
+                                                    department.mutated_fields
+                                                        .key,
+                                            ),
+                                        },
+                                    };
+                                } else {
+                                    additionalDepartments[index] = item;
+                                }
+                            },
+                        );
+                    }
+                }
+
+                return of(
+                    new DemolishAdditionalFieldsSuccess({
+                        departments: additionalDepartments,
+                        vendorFields: !department.id
+                            ? {
+                                  ...departments.vendorFields,
+                                  [department.fields as keyof DepartmentFieldsModel]: vendorAdditionalFields,
+                              }
+                            : departments.vendorFields,
+                    }),
+                );
             },
         ),
     );

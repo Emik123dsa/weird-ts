@@ -31,23 +31,20 @@ export const departmentReducer = (
             return {
                 ...state,
                 vendorFields: {
+                    contact_person_fields: action.payload,
                     info_fields: state.vendorFields.info_fields,
-                    contact_person_fields: action.payload.contact_person_fields,
                 },
             };
         case EnumDepartmentActions.SetDepartmentsInfoFieldsSuccess:
             return {
                 ...state,
                 vendorFields: {
-                    info_fields: action.payload.info_fields,
                     contact_person_fields:
                         state.vendorFields.contact_person_fields,
+                    info_fields: action.payload,
                 },
             };
-        case EnumDepartmentActions.SetDepartmentContactPersonsFieldsSuccess:
-            return state;
-        case EnumDepartmentActions.SetDepartmentInfoFieldsSuccess:
-            return state;
+
         case EnumDepartmentActions.SetCurrentDepartmentSuccess:
             return { ...state, currentDepartment: action.payload };
         case EnumDepartmentActions.RemoveCurrentDepartmentSuccess:
@@ -59,6 +56,21 @@ export const departmentReducer = (
             return { ...state, departments: action.payload };
         case EnumDepartmentActions.DemolishDepartmentSuccess:
             return { ...state, departments: action.payload };
+        case EnumDepartmentActions.AlterCurrentDepartmentSuccess:
+            return { ...state, departments: action.payload };
+        case EnumDepartmentActions.AddAdditionalFieldsSuccess:
+            return {
+                ...state,
+                vendorFields: action.payload.vendorFields,
+                departments: action.payload.departments,
+            };
+        case EnumDepartmentActions.DemolishAdditionalFieldsSuccess:
+            return {
+                ...state,
+                vendorFields: action.payload.vendorFields,
+                departments: action.payload.departments,
+            };
+
         default:
             return state;
     }

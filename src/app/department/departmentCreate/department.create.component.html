@@ -1,11 +1,12 @@
 <section class="department__vendor">
     <div class="container">
         <div
+            @departmentTrigger
             class="row justify-content-center no-gutters align-items-center mx-3 mb-4"
         >
             <form
                 [formGroup]="departmentForm"
-                (submit)="storeDepartment($event)"
+                (ngSubmit)="storeDepartment($event)"
                 class="col-xl-8 col-sm-10 col-md-12 col-xs-12"
             >
                 <div
@@ -28,24 +29,40 @@
                                         .info_fields | keyvalue
                                 "
                             >
-                                <div *ngFor="let field_item of fields.value">
+                                <div
+                                    *ngFor="
+                                        let field_item of fields.value;
+                                        index as i
+                                    "
+                                >
                                     <department-form-inp
                                         formControlName="info_fields"
-                                        [_value]="field_item.value"
+                                        [text]="field_item.value"
+                                        [seq]="i"
                                         [c]="
                                             departmentForm.controls.info_fields
                                         "
+                                        [ngStyle]="{
+                                            animationDelay: i * 0.75 + 's'
+                                        }"
                                         (dispatchToProps)="
-                                            dispatchFieldsToProps(
-                                                'info_fields',
-                                                fields.key,
-                                                field_item
-                                            )
+                                            dispatchFieldsToProps({
+                                                key: 'info_fields',
+                                                name: fields.key,
+                                                value: i
+                                            })
                                         "
                                         [optional]="true"
                                         [id]="field_item.key"
-                                        [name]="field_item.name"
+                                        [name]="fields.key"
                                         [pH]="field_item.key"
+                                        [deleteOnAdditional]="
+                                            fields.key === 'additional_fields'
+                                        "
+                                        fields="info_fields"
+                                        (removeFromProps)="
+                                            removeAdditionalFields($event)
+                                        "
                                     >
                                     </department-form-inp>
                                 </div>
@@ -68,6 +85,7 @@
                     </div>
                 </div>
                 <div
+                    @departmentTrigger
                     class="department__vendor-create__info row justify-content-center align-items-center pb-4"
                 >
                     <div
@@ -87,26 +105,41 @@
                                         .contact_person_fields | keyvalue
                                 "
                             >
-                                <div *ngFor="let field_item of fields.value">
+                                <div
+                                    *ngFor="
+                                        let field_item of fields.value;
+                                        index as i
+                                    "
+                                >
                                     <div>
                                         <department-form-inp
                                             formControlName="contact_person_fields"
-                                            [_value]="field_item.value"
-                                            (dispatchToProps)="
-                                                dispatchFieldsToProps(
-                                                    'contact_person_fields',
-                                                    fields.key,
-                                                    field_item
-                                                )
-                                            "
+                                            [text]="field_item.value"
+                                            [seq]="i"
                                             [c]="
                                                 departmentForm.controls
                                                     .contact_person_fields
                                             "
+                                            (dispatchToProps)="
+                                                dispatchFieldsToProps({
+                                                    key:
+                                                        'contact_person_fields',
+                                                    name: fields.key,
+                                                    value: i
+                                                })
+                                            "
+                                            fields="contact_person_fields"
                                             [optional]="true"
                                             [id]="field_item.key"
-                                            [name]="field_item.name"
+                                            [name]="fields.key"
                                             [pH]="field_item.key"
+                                            [deleteOnAdditional]="
+                                                fields.key ===
+                                                'additional_fields'
+                                            "
+                                            (removeFromProps)="
+                                                removeAdditionalFields($event)
+                                            "
                                         >
                                         </department-form-inp>
                                         <div
@@ -162,7 +195,6 @@
                             class="department__full-width"
                             type="submit"
                             text="Send"
-                            (click)="storeDepartment($event)"
                             color="green"
                         >
                         </department-button>

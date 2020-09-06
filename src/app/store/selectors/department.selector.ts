@@ -5,7 +5,7 @@ import { DepartmentState } from '../state/department.state';
 import { AppState } from '../state/app.state';
 import { DepartmentFields } from '../../core';
 
-const selectDepartments = (state: AppState) => state.vendor;
+export const selectDepartments = (state: AppState) => state.vendor;
 
 export const selectDepartmentsList = createSelector(
     selectDepartments,

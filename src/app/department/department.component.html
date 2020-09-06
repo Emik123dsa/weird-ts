@@ -1,12 +1,35 @@
 <router-outlet></router-outlet>
 
-<department-modal-delete class="department__form-modal" *ngIf="(modalActivated$ | ngrxPush).activated 
-    && (modalActivated$ | ngrxPush).type === 'delete'
-    " [modalActivated]="modalActivated$ | ngrxPush" [modalContext]="modalContext$ | ngrxPush">
+<department-modal-delete
+    class="department__form-modal"
+    *ngIf="
+        (modalActivated$ | ngrxPush).activated &&
+        (modalActivated$ | ngrxPush).type === 'delete'
+    "
+    [modalActivated]="modalActivated$ | ngrxPush"
+    [modalContext]="modalContext$ | ngrxPush"
+>
 </department-modal-delete>
 
-<department-add-field-modal *ngIf="(modalActivated$ | ngrxPush).activated 
-    && ((modalActivated$ | ngrxPush).type ===  'info_fields' ||
-    (modalActivated$ | ngrxPush).type ===  'contact_person_fields')
-    " [modalActivated]="modalActivated$ | ngrxPush" [modalContext]="modalContext$ | ngrxPush">
+<department-add-field-modal
+    *ngIf="
+        (modalActivated$ | ngrxPush).activated &&
+        ((modalActivated$ | ngrxPush).type === 'info_fields' ||
+            (modalActivated$ | ngrxPush).type === 'contact_person_fields')
+    "
+    [modalActivated]="modalActivated$ | ngrxPush"
+    [modalContext]="modalContext$ | ngrxPush"
+>
 </department-add-field-modal>
+
+<department-modal-remove-field
+    *ngIf="
+        (modalActivated$ | ngrxPush).activated &&
+        ((modalActivated$ | ngrxPush).type === 'delete|info_fields' ||
+            (modalActivated$ | ngrxPush).type ===
+                'delete|contact_person_fields')
+    "
+    [modalActivated]="modalActivated$ | ngrxPush"
+    [modalContext]="modalContext$ | ngrxPush"
+>
+</department-modal-remove-field>

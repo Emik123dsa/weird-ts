@@ -1,4 +1,27 @@
 .department {
+    &__erase {
+        &-add {
+            &__sign {
+                cursor: pointer;
+                position: absolute;
+                z-index: 9999;
+                right: 12px;
+                transform: translateY(-50%);
+                top: 50%;
+                .department__erase-btn {
+                    transition: 0.3s ease;
+                    fill: rgba(244, 67, 54, 0.5);
+                }
+                &:hover {
+                    transition: 0.1s ease;
+                    .department__erase-btn {
+                        fill: rgba(244, 67, 54, 1);
+                    }
+                }
+            }
+        }
+    }
+
     &__vendor {
         &-input {
             border: none;

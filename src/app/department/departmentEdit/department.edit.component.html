@@ -12,6 +12,7 @@
                     class="department__vendor-create__info row justify-content-center align-items-center pb-4 mb-4"
                 >
                     <div
+                        @departmentTrigger
                         class="department__vendor-create__header col-xl-12 col-sm-12 col-xs-12 pb-4"
                     >
                         <h3 class="department__vendor-create__info-title">
@@ -24,29 +25,38 @@
                         <div class="department__vendor-create__items">
                             <div
                                 *ngFor="
-                                    let fields of Department.info_fields
+                                    let fields of department.info_fields
                                         | keyvalue
                                 "
                             >
-                                <div *ngFor="let field_item of fields.value">
+                                <div
+                                    @departmentTrigger
+                                    *ngFor="
+                                        let field_item of fields.value;
+                                        index as i
+                                    "
+                                >
                                     <department-form-inp
                                         formControlName="info_fields"
-                                        [_value]="field_item.value"
+                                        [text]="field_item.value"
+                                        [seq]="i"
                                         [c]="
                                             currentDepartmentForm.controls
                                                 .info_fields
                                         "
-                                        (dispatchToProps)="
-                                            dispatchFieldsToProps(
-                                                'info_fields',
-                                                fields.key,
-                                                field_item
-                                            )
-                                        "
                                         [optional]="true"
                                         [id]="field_item.key"
-                                        [name]="field_item.name"
+                                        fields="info_fields"
+                                        [name]="fields.key"
                                         [pH]="field_item.key"
+                                        [deleteOnAdditional]="
+                                            fields.key === 'additional_fields'
+                                        "
+                                        (removeFromProps)="
+                                            removeAdditionalFieldsAccurate(
+                                                $event
+                                            )
+                                        "
                                     >
                                     </department-form-inp>
                                 </div>
@@ -56,6 +66,7 @@
                                     class="col-xl-9 col-sm-10 col-md-10 text-right"
                                 >
                                     <department-button
+                                        @departmentTrigger
                                         (click)="addNewField('info_fields')"
                                         type="submit"
                                         text="Add new field"
@@ -74,7 +85,10 @@
                     <div
                         class="department__vendor-create__header col-xl-12 col-sm-12 col-xs-12 pb-4"
                     >
-                        <h3 class="department__vendor-create__info-title">
+                        <h3
+                            @departmentTrigger
+                            class="department__vendor-create__info-title"
+                        >
                             Department Contact Person
                         </h3>
                     </div>
@@ -83,31 +97,41 @@
                     >
                         <div class="department__vendor-create__items">
                             <div
+                                @departmentTrigger
                                 *ngFor="
-                                    let fields of Department.contact_person_fields
+                                    let fields of department.contact_person_fields
                                         | keyvalue
                                 "
                             >
-                                <div *ngFor="let field_item of fields.value">
+                                <div
+                                    *ngFor="
+                                        let field_item of fields.value;
+                                        index as i
+                                    "
+                                >
                                     <div>
                                         <department-form-inp
                                             formControlName="contact_person_fields"
-                                            [_value]="field_item.value"
-                                            (dispatchToProps)="
-                                                dispatchFieldsToProps(
-                                                    'contact_person_fields',
-                                                    fields.key,
-                                                    field_item
-                                                )
-                                            "
+                                            [text]="field_item.value"
+                                            [seq]="i"
                                             [c]="
                                                 currentDepartmentForm.controls
                                                     .contact_person_fields
                                             "
                                             [optional]="true"
                                             [id]="field_item.key"
-                                            [name]="field_item.name"
+                                            fields="contact_person_fields"
+                                            [name]="fields.key"
                                             [pH]="field_item.key"
+                                            [deleteOnAdditional]="
+                                                fields.key ===
+                                                'additional_fields'
+                                            "
+                                            (removeFromProps)="
+                                                removeAdditionalFieldsAccurate(
+                                                    $event
+                                                )
+                                            "
                                         >
                                         </department-form-inp>
                                         <div
@@ -128,6 +152,7 @@
                                     class="col-xl-9 col-sm-10 col-md-10 text-right"
                                 >
                                     <department-button
+                                        @departmentTrigger
                                         (click)="
                                             addNewField('contact_person_fields')
                                         "
@@ -163,7 +188,7 @@
                             class="department__full-width"
                             type="submit"
                             text="Send"
-                            (click)="storeDepartment($event)"
+                            (click)="updateDepartment($event)"
                             color="green"
                         >
                         </department-button>

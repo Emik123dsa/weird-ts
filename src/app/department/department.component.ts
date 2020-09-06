@@ -6,6 +6,7 @@ import { select, State, Store } from '@ngrx/store';
 import { NavigationStart, Router } from '@angular/router';
 import { GetDropDown, GetModal } from '../store/actions/utils.action';
 import { RemoveCurrentDepartment } from '../store/actions/department.action';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
     selector: 'department',

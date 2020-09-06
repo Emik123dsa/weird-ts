@@ -1,20 +1,22 @@
+import { TypeModal } from './../../core/models/utils.model/utils.model';
+import { DepartmentSetterModel } from './../../core/models/department.model/department.fields.model';
+
+import { animate, style, transition, trigger } from '@angular/animations';
 import {
     SetDepartmentsInfoFields,
     SetDepartmentsContactPersonsFieldsSuccess,
     SetDepartmentsContactPersonsFields,
     DepartmentSubFieldsModel,
     DepartmentFieldsModel,
-    SetDepartmentFieldsModel,
-    SetDepartmentsFieldsModel,
     RemoveCurrentDepartment,
     AddDepartment,
 } from './../../store/actions/department.action';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 
 import { DepartmentService } from '../../core/services';
 
 import { ActivatedRoute } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import * as camelCase from 'camelcase';
 import {
@@ -23,11 +25,7 @@ import {
     FormControl,
     Validators,
 } from '@angular/forms';
-import {
-    Department,
-    DepartmentFields,
-    DepartmentSetterModel,
-} from '../../core';
+import { Department, DepartmentFields } from '../../core';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../store/state/app.state';
 import {
@@ -35,15 +33,24 @@ import {
     selectVendorFields,
     selectVendorInfoFields,
 } from '../../store/selectors/department.selector';
-import { take } from 'rxjs/operators';
+import { take, distinctUntilChanged, startWith } from 'rxjs/operators';
 import { GetModal, GetDropDown } from '../../store/actions/utils.action';
 
 @Component({
     selector: '<department-create-vendor>',
     templateUrl: './department.create.component.html',
     styleUrls: ['./department.create.component.scss'],
+    animations: [
+        trigger('departmentTrigger', [
+            transition(':enter', [
+                style({ opacity: 0 }),
+                animate('500ms', style({ opacity: 1 })),
+            ]),
+            transition(':leave', [animate('500ms', style({ opacity: 0 }))]),
+        ]),
+    ],
 })
-export class DepartmentCreateComponent implements OnInit, OnDestroy {
+export class DepartmentCreateComponent implements OnInit {
     public title = 'Department Create';
 
     private departmentFields$ = this._store.pipe(select(selectVendorFields));
@@ -52,6 +59,8 @@ export class DepartmentCreateComponent implements OnInit, OnDestroy {
 
     private errors: Object = {};
 
+    public ngOnInit() {}
+
     public constructor(
         private departmentService: DepartmentService,
         private route: ActivatedRoute,
@@ -59,68 +68,47 @@ export class DepartmentCreateComponent implements OnInit, OnDestroy {
         private fB: FormBuilder,
         private _store: Store<AppState>,
     ) {
-        this.departmentFields$.subscribe(
-            (
-                data: Pick<Department, 'info_fields' | 'contact_person_fields'>,
-            ): void => {
-                this.departmentForm = this.fB.group({
-                    info_fields: data.info_fields,
-                    contact_person_fields: data.contact_person_fields,
-                } as Pick<Department, 'info_fields' | 'contact_person_fields'>);
-            },
-        );
+        this.departmentFields$
+            .pipe(distinctUntilChanged())
+            .subscribe(
+                (
+                    data: Pick<
+                        Department,
+                        'info_fields' | 'contact_person_fields'
+                    >,
+                ): void => {
+                    this.departmentForm = this.fB.group({
+                        info_fields: data.info_fields,
+                        contact_person_fields: data.contact_person_fields,
+                    } as Pick<Department, 'info_fields' | 'contact_person_fields'>);
+                },
+            );
     }
 
-    protected convertToNormalFormGroup<
-        T extends keyof DepartmentFields<K, K>,
-        K extends DepartmentSetterModel
-    >({ essential_fields, additional_fields }: DepartmentFields<K, K>): Object {
-        const selectedEssentialFields: Object = essential_fields.reduce(
-            (acc: K, sub: K): Object => {
-                acc = { ...acc, [sub.name]: sub.value };
-                return acc;
-            },
-            [],
-        );
-
-        const selectedAdditionalFields: Object = additional_fields.reduce(
-            (
-                acc: DepartmentSetterModel,
-                sub: DepartmentSetterModel,
-            ): Object => {
-                acc = { ...acc, [sub.name]: sub.value };
-                return acc;
-            },
-            [],
-        );
-
-        return Object.assign(selectedEssentialFields, selectedAdditionalFields);
-    }
-
-    public dispatchFieldsToProps(
-        type: string,
-        sub_type?: string,
-        item?: DepartmentSetterModel,
-    ): void {
-        const mutatedFields: SetDepartmentsFieldsModel = {
-            fields: type as DepartmentFieldsModel,
-            sub_fields: sub_type as DepartmentSubFieldsModel,
-            regenerator: {
-                key: item.key,
-                value: this.departmentForm.value[type][item.name],
-                name: item.name,
-            },
-        };
-        switch (type) {
+    public dispatchFieldsToProps({
+        key,
+        name,
+        value,
+    }: DepartmentSetterModel): void {
+        switch (key) {
             case 'info_fields':
                 this._store.dispatch(
-                    new SetDepartmentsInfoFields(mutatedFields),
+                    new SetDepartmentsInfoFields({
+                        sub_fields: name as DepartmentSubFieldsModel,
+                        mutated_fields: this.departmentForm.value[key][name][
+                            value
+                        ],
+                    }),
                 );
-
                 break;
             case 'contact_person_fields':
                 this._store.dispatch(
-                    new SetDepartmentsContactPersonsFields(mutatedFields),
+                    new SetDepartmentsContactPersonsFields({
+                        sub_fields: name as DepartmentSubFieldsModel,
+                        mutated_fields: this.departmentForm.value[key][name][
+                            value
+                        ],
+                    }),
                 );
                 break;
         }
@@ -138,11 +126,11 @@ export class DepartmentCreateComponent implements OnInit, OnDestroy {
 
         const name:
             | DepartmentSetterModel
-            | undefined = this.departmentForm.value.info_fields[
-            'essential_fields'
-        ].find((data: DepartmentSetterModel): boolean => data.name === 'name');
+            | undefined = this.departmentForm.value.info_fields.essential_fields.find(
+            (data: DepartmentSetterModel): boolean => data.name === 'name',
+        );
 
-        if (this.departmentForm.value && this.departmentForm.valid) {
+        if (this.departmentForm.valid) {
             this._store.dispatch(
                 new AddDepartment({
                     id: Number(currentId),
@@ -159,10 +147,17 @@ export class DepartmentCreateComponent implements OnInit, OnDestroy {
         }
     }
 
-    public ngOnDestroy() {
-        if (this.departmentFields$) {
-            this.departmentFields$.pipe(take(1));
-        }
+    public removeAdditionalFields<T extends DepartmentSetterModel>(
+        e: DepartmentSetterModel,
+    ) {
+        this._store.dispatch(
+            new GetModal({
+                activated: true,
+                type: ('delete' + '|' + e.key) as TypeModal,
+                id: null,
+                bind: e.name,
+            }),
+        );
     }
 
     public addNewField<
@@ -175,10 +170,8 @@ export class DepartmentCreateComponent implements OnInit, OnDestroy {
             new GetModal({
                 activated: true,
                 type,
-                id: 0,
+                id: null,
             }),
         );
     }
-
-    public ngOnInit() {}
 }

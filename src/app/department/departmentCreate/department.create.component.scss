@@ -1,47 +1,47 @@
 .department {
-  &__full {
-    &-width {
-      width: 100%;
+    
+    &__full {
+        &-width {
+            width: 100%;
+        }
     }
-  }
-  &__vendor {
-    margin-top: 35px;
-    &-create {
-      transform: translate(15px);
-      &__contact {
-        &_persons {
+    &__vendor {
+        margin-top: 35px;
+        &-create {
+            transform: translate(15px);
+            &__contact {
+                &_persons {
+                }
+            }
+            &__info {
+                position: relative;
+                box-shadow: 0 0 2px #eee;
+                border-radius: 10px;
+                border: 2px solid #eeeeee;
+                border: 2px solid #eeeeee;
+                border: 2px solid #eeeeee;
+                border-bottom-right-radius: 15px;
+                border-bottom-left-radius: 15px;
+                &-title {
+                    font-size: 16px;
+                    padding: 0 5px !important;
+                    pointer-events: none;
+                    transform: translateY(-12px);
+                    position: absolute;
+                    background: #fff;
+                    // font-weight: 400;
+                }
+                &::before {
+                    position: absolute;
+                    top: 12px;
+                    // border-top-right-radius: 25px;
+                    content: '';
+                    left: 2px;
+                    width: 2px;
+                    // background: #eee;
+                    height: 100%;
+                }
+            }
         }
-      }
-      &__info {
-      
-        position: relative;
-        box-shadow: 0 0 2px #eee;
-        border-radius: 10px;
-        border: 2px solid #eeeeee;
-        border: 2px solid #eeeeee;
-        border: 2px solid #eeeeee;
-        border-bottom-right-radius: 15px;
-        border-bottom-left-radius: 15px;
-        &-title {
-          font-size: 16px;
-          padding: 0 5px !important;
-          pointer-events: none;
-          transform: translateY(-12px);
-          position: absolute;
-          background: #fff;
-          // font-weight: 400;
-        }
-        &::before {
-          position: absolute;
-          top: 12px;
-          // border-top-right-radius: 25px;
-          content: "";
-          left: 2px;
-          width: 2px;
-          // background: #eee;
-          height: 100%;
-        }
-      }
     }
-  }
 }

@@ -1,3 +1,4 @@
+import { DepartmentState } from './../state/department.state';
 import { DepartmentFields } from './../../core/models/department.model/department.fields.model';
 import { Action } from '@ngrx/store';
 import { Department, DepartmentSetterModel } from '../../core/models';
@@ -5,25 +6,37 @@ import { Department, DepartmentSetterModel } from '../../core/models';
 export type DepartmentFieldsModel = 'info_fields' | 'contact_person_fields';
 export type DepartmentSubFieldsModel = 'essential_fields' | 'additional_fields';
 /**
- * Set Department Fields Model
+ * Set Departments Fields Model
  *
  * @export
- * @interface SetDepartmentFieldsModel
+ * @interface SetDepartmentsFieldsModel
+ */
+export interface SetDepartmentsFieldsModel {
+    fields?: DepartmentFieldsModel;
+    sub_fields?: DepartmentSubFieldsModel;
+    mutated_fields: DepartmentSetterModel;
+}
+/**
+ * Set Department Field Model
+ *
+ * @export
+ * @interface SetDepartmentFieldModel
  */
 export interface SetDepartmentFieldsModel {
-    id: number;
-    fields: DepartmentFieldsModel;
-    sub_fields: DepartmentSubFieldsModel;
-    regenerator: DepartmentSetterModel;
+    id?: string | number | never;
+    fields?: DepartmentFieldsModel;
+    sub_fields?: DepartmentSubFieldsModel;
+    mutated_fields?: DepartmentSetterModel;
 }
 
-export type DepartmentsContactPersonsModelSuccess = Pick<
-    Department,
-    'contact_person_fields'
+export type DepartmentsContactPersonsModelSuccess = DepartmentFields<
+    DepartmentSetterModel,
+    DepartmentSetterModel
 >;
-export type DepartmentsInfoModelSuccess = Pick<Department, 'info_fields'>;
-
-export type SetDepartmentsFieldsModel = Omit<SetDepartmentFieldsModel, 'id'>;
+export type DepartmentsInfoModelSuccess = DepartmentFields<
+    DepartmentSetterModel,
+    DepartmentSetterModel
+>;
 /**
  * Enum for ngrx Department
  *
@@ -38,10 +51,10 @@ export enum EnumDepartmentActions {
     /**
      * SINGLE IMPLEMENTATION FOR DEPARTMENT | CHANGE EMIITER
      */
-    SetDepartmentInfoFields = '[Department] Set Department Info Fields',
-    SetDepartmentInfoFieldsSuccess = '[Department] Set Department Info Fields Success',
-    SetDepartmentContactPersonsFields = '[Department] Set Department Contact persons Fields',
-    SetDepartmentContactPersonsFieldsSuccess = '[Department] Set Department Contact persons Fields Success',
+    AddCurrentDepartmentAdditionalFields = '[Department] Add Current Deparmtnet Additional Fields',
+    AddCurrentDepartmentAdditionalFieldsSuccess = '[Department] Add Current Deparmtnet Additional Fields Success',
+    RemoveCurrentDepartmentAdditionalFields = '[Department] Remove Current Deparmtnet Additional Fields',
+    RemoveCurrentDepartmentAdditionalFieldsSuccess = '[Department] Remove Current Deparmtnet AdditionalFields Success',
     /**
      * MULTIPLY IMPLEMENTATION FOR DEPARTMENTS | CREATE EMITTER
      */
@@ -58,13 +71,25 @@ export enum EnumDepartmentActions {
     DemolishDepartmentSuccess = '[Department] Demolish Department From Store Success',
     AddDepartmentSuccess = '[Department] Add Department Success',
 
+    /**
+     * Additional Fields Features
+     */
     DemolishAdditionalFields = '[Department] Demolish Department Fields',
+    DemolishAdditionalFieldsSuccess = '[Department] Demolish Department Fields Success',
 
+    AddAdditionalFields = '[Department] Add Department Fields',
+    AddAdditionalFieldsSuccess = '[Department] Add Department Fields Success',
+
+    /**
+     * Features for Current department
+     */
     RemoveCurrentDepartmentSuccess = '[Department] Remove Current Department Success',
     RemoveCurrentDepartment = '[Department] Remove Current Department',
     SetCurrentDepartmentSuccess = '[Department] Set Current Department Success',
-
     SetCurrentDepartment = '[Department] Set Current Department',
+
+    AlterCurrentDepartment = '[Department] Alter Current Department',
+    AlterCurrentDepartmentSuccess = '[Department] Alter Current Department Success',
 }
 /**
  * Getter for DepartmentsSuccess
@@ -128,8 +153,9 @@ export class SetDepartmentsInfoFields implements Action {
  * @class SetDepartmentInfoFields
  * @implements {Action}
  */
-export class SetDepartmentInfoFields implements Action {
-    public readonly type = EnumDepartmentActions.SetDepartmentInfoFields;
+export class AddCurrentDepartmentAdditionalFields implements Action {
+    public readonly type =
+        EnumDepartmentActions.AddCurrentDepartmentAdditionalFields;
     constructor(public payload: SetDepartmentFieldsModel) {}
 }
 /**
@@ -151,9 +177,9 @@ export class SetDepartmentsContactPersonsFields implements Action {
  * @class SetDepartmentInfoFields
  * @implements {Action}
  */
-export class SetDepartmentContactPersonsFields implements Action {
+export class RemoveCurrentDepartmentAdditionalFields implements Action {
     public readonly type =
-        EnumDepartmentActions.SetDepartmentContactPersonsFields;
+        EnumDepartmentActions.RemoveCurrentDepartmentAdditionalFields;
     constructor(public payload: SetDepartmentFieldsModel) {}
 }
 
@@ -167,7 +193,12 @@ export class SetDepartmentContactPersonsFields implements Action {
 export class SetDepartmentsInfoFieldsSuccess implements Action {
     public readonly type =
         EnumDepartmentActions.SetDepartmentsInfoFieldsSuccess;
-    constructor(public payload: DepartmentsInfoModelSuccess) {}
+    constructor(
+        public payload: DepartmentFields<
+            DepartmentSetterModel,
+            DepartmentSetterModel
+        >,
+    ) {}
 }
 /**
  * Info fields for department change
@@ -176,9 +207,10 @@ export class SetDepartmentsInfoFieldsSuccess implements Action {
  * @class SetDepartmentInfoFields
  * @implements {Action}
  */
-export class SetDepartmentInfoFieldsSuccess implements Action {
-    public readonly type = EnumDepartmentActions.SetDepartmentInfoFieldsSuccess;
-    constructor(public payload: SetDepartmentFieldsModel) {}
+export class AddCurrentDepartmentAdditionalFieldsSuccess implements Action {
+    public readonly type =
+        EnumDepartmentActions.AddCurrentDepartmentAdditionalFieldsSuccess;
+    constructor(public payload: any) {}
 }
 /**
  * Contact persons fields for departments create
@@ -199,10 +231,10 @@ export class SetDepartmentsContactPersonsFieldsSuccess implements Action {
  * @class SetDepartmentInfoFields
  * @implements {Action}
  */
-export class SetDepartmentContactPersonsFieldsSuccess implements Action {
+export class RemoveCurrentDepartmentAdditionalFieldsSuccess implements Action {
     public readonly type =
-        EnumDepartmentActions.SetDepartmentContactPersonsFieldsSuccess;
-    constructor(public payload: SetDepartmentFieldsModel) {}
+        EnumDepartmentActions.RemoveCurrentDepartmentAdditionalFieldsSuccess;
+    constructor(public payload: any) {}
 }
 
 export class SetCurrentDepartment implements Action {
@@ -243,17 +275,48 @@ export class AddDepartmentSuccess implements Action {
     constructor(public payload: Department[]) {}
 }
 
+export class AlterCurrentDepartment implements Action {
+    public readonly type = EnumDepartmentActions.AlterCurrentDepartment;
+    constructor(public payload: Department) {}
+}
+
+export class AlterCurrentDepartmentSuccess implements Action {
+    public readonly type = EnumDepartmentActions.AlterCurrentDepartmentSuccess;
+    constructor(public payload: Department[]) {}
+}
+
+export class AddAdditionalFields implements Action {
+    public readonly type = EnumDepartmentActions.AddAdditionalFields;
+    constructor(public payload: SetDepartmentFieldsModel) {}
+}
+
+export class AddAdditionalFieldsSuccess implements Action {
+    public readonly type = EnumDepartmentActions.AddAdditionalFieldsSuccess;
+    constructor(public payload: Omit<DepartmentState, 'currentDepartment'>) {}
+}
+
+export class DemolishAdditionalFields implements Action {
+    public readonly type = EnumDepartmentActions.DemolishAdditionalFields;
+    constructor(public payload: SetDepartmentFieldsModel) {}
+}
+
+export class DemolishAdditionalFieldsSuccess implements Action {
+    public readonly type =
+        EnumDepartmentActions.DemolishAdditionalFieldsSuccess;
+    constructor(public payload: Omit<DepartmentState, 'currentDepartment'>) {}
+}
+
 export type DepartmentActions =
     | GetDepartment
     | GetDepartments
     | GetDepartmentSuccess
     | GetDepartmentsSuccess
-    | SetDepartmentContactPersonsFields
-    | SetDepartmentContactPersonsFieldsSuccess
+    | AddCurrentDepartmentAdditionalFields
+    | AddCurrentDepartmentAdditionalFieldsSuccess
     | SetDepartmentsContactPersonsFields
     | SetDepartmentsContactPersonsFieldsSuccess
-    | SetDepartmentInfoFields
-    | SetDepartmentInfoFieldsSuccess
+    | RemoveCurrentDepartmentAdditionalFields
+    | RemoveCurrentDepartmentAdditionalFields
     | SetDepartmentsInfoFields
     | SetDepartmentsInfoFieldsSuccess
     | SetCurrentDepartment
@@ -263,4 +326,10 @@ export type DepartmentActions =
     | DemolishDepartment
     | DemolishDepartmentSuccess
     | AddDepartment
-    | AddDepartmentSuccess;
+    | AddDepartmentSuccess
+    | AlterCurrentDepartment
+    | AlterCurrentDepartmentSuccess
+    | AddAdditionalFields
+    | AddAdditionalFieldsSuccess
+    | DemolishAdditionalFields
+    | DemolishAdditionalFieldsSuccess;

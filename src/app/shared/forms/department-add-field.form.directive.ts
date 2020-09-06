@@ -13,8 +13,22 @@ export function validateProperty(
     validators: ValidatorFn[],
 ): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
-        const propertyVal = control.value && control.value[property];
-        const newFc = new FormControl(propertyVal);
+        const propertyDecorator: Array<string> = property.split('|');
+
+        let propertyVal: Array<any> = control.value;
+
+        if (Array.isArray(propertyDecorator) && propertyDecorator.length > 0) {
+            propertyVal = propertyDecorator
+                .filter((data: string) => !!data)
+                .reduce((acc: any, item: string) => {
+                    acc = acc[item];
+                    return acc;
+                }, propertyVal);
+        } else {
+            propertyVal = propertyVal[property];
+        }
+
+        const newFc: FormControl = new FormControl(propertyVal);
 
         const failedValidators = validators
             .map((v) => v(newFc))
@@ -43,9 +57,10 @@ export class DepartmentAddFieldValidator implements Validator {
     validate(control: AbstractControl): ReturnType<typeof validateProperty> {
         return (
             this.addFieldValidator &&
-            validateProperty('super_key', [
+            validateProperty('', [
                 Validators.required,
                 Validators.minLength(4),
+                Validators.pattern(/^\[a-Za-Z]+$/i),
             ])
         );
     }

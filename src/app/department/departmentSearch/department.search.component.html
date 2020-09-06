@@ -10,14 +10,15 @@
                     <div class="row align-items-center">
                         <div class="col-8">
                             <department-form-inp
-                                text="query"
+                                text=""
+                                [seq]="0"
                                 formControlName="query"
                                 customClass="col-12"
                                 [c]="departmentForm.controls.query"
-                                name="super_query"
+                                name="superQuery"
                                 [optional]="true"
                                 pH="Search"
-                                idd="query"
+                                idd="superQuery"
                             >
                             </department-form-inp>
                         </div>

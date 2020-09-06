@@ -8,6 +8,7 @@ import {
     Output,
     ViewChild,
     EventEmitter,
+    ElementRef,
 } from '@angular/core';
 import { AppState } from '../../store/state/app.state';
 import { Store, select } from '@ngrx/store';
@@ -40,7 +41,7 @@ export class ButtonComponent implements OnInit {
      * @memberof ButtonComponent
      */
     @Input()
-    type?: string;
+    protected type!: string;
     /**
      * Disabled
      *
@@ -48,7 +49,7 @@ export class ButtonComponent implements OnInit {
      * @memberof ButtonComponent
      */
     @Input()
-    disabled?: boolean;
+    protected disabled!: boolean;
     /**
      * Text
      *
@@ -56,7 +57,7 @@ export class ButtonComponent implements OnInit {
      * @memberof ButtonComponent
      */
     @Input()
-    text?: string;
+    protected text!: string;
     /**
      * Color implementation
      *
@@ -64,14 +65,14 @@ export class ButtonComponent implements OnInit {
      * @memberof ButtonComponent
      */
     @Input()
-    color?: ButtonColor;
+    protected color!: ButtonColor;
     /**
      * To Bind Button child
      *
      * @type {HTMLElement}
      * @memberof ButtonComponent
      */
-    @ViewChild('button') btnRef: HTMLElement;
+    @ViewChild('button') public btnRef!: ElementRef;
     /**
      * OnPushBtn implementation
      *
